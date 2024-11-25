@@ -7,3 +7,10 @@ Create a Json file for the following entities and make sure you provide proper r
 - Classroom
 - Teacher
 - Subject
+
+# List of Controls
+- All the Inputs tag
+- Grid with serverside Searhing, Sorting and Filtering 
+- Nested Grid with serverside Searhing, Sorting and Filtering
+- Theme Management
+- File Upload
