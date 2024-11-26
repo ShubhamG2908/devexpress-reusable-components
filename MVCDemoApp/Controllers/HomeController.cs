@@ -1,7 +1,7 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Microsoft.AspNetCore.Mvc;
-using MVCDemoApp.Models;
+using MVCDemoApp.Data;
 using System.Diagnostics;
 using ModelsProject;
 
@@ -20,7 +20,7 @@ namespace MVCDemoApp.Controllers
 
 		public IActionResult Index()
 		{
-			var model = SampleData.Orders;
+			var model = SchoolData.SchoolsList;
 			return View(model);
 		}
 
@@ -38,7 +38,7 @@ namespace MVCDemoApp.Controllers
 		[HttpGet]
 		public IActionResult Get(DataSourceLoadOptions loadOptions)
 		{
-			return Ok(DataSourceLoader.Load(SampleData.Orders, loadOptions));
+			return Ok(DataSourceLoader.Load(SchoolData.SchoolsList, loadOptions));
 		}
 	}
 }
