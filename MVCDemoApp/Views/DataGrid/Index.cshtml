@@ -1,0 +1,35 @@
+﻿@using MVCDemoApp.Extensions
+@using MVCDemoApp.Models
+
+@{
+    var gridConfig = new DataGridConfigModel<Student>
+            {
+                GridId = "grdStudent",
+                EnableCRUDOperations = true,
+                PageSize = 10,
+                ControllerName = "Student",
+                DataAction = "Get",
+                UpdateAction = "Put",
+                InsertAction = "Post",
+                DeleteAction = "Delete",
+                Columns = grid =>
+                {
+                    grid.Columns(columns =>
+                    {
+                        columns.AddFor(sd => sd.FirstName).ValidationRules(r => r.AddRequired().Message("This Field Is Required"));
+                        columns.AddFor(sd => sd.LastName).ValidationRules(r => r.AddRequired().Message("This Field Is Required"));
+                        columns.AddFor(sd => sd.DOB).ValidationRules(r => r.AddRequired().Message("This Field Is Required"));
+                        columns.AddFor(sd => sd.Gender).ValidationRules(r => r.AddRequired().Message("This Field Is Required"));
+                        columns.AddFor(sd => sd.EnrollmentDate);
+                        columns.AddFor(sd => sd.ContactNumber);
+                        columns.AddFor(sd => sd.Email).ValidationRules(r =>
+                        {
+                            r.AddRequired().Message("This field is required");
+                            r.AddEmail().Message("Enter a valid email address");
+                        });
+                        columns.AddFor(sd => sd.Address);
+                    });
+                },
+            };
+}
+@Html.DevExpressDataGrid(gridConfig)

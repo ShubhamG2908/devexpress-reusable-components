@@ -1,0 +1,64 @@
+{    
+    "Classroom": [
+        {
+            "Id": 1,
+            "ClassroomName": "1A",
+            "Capacity": 31,
+            "TeacherId": 2
+        },
+        {
+            "Id": 2,
+            "ClassroomName": "2A",
+            "Capacity": 32,
+            "TeacherId": 3
+        },
+        {
+            "Id": 3,
+            "ClassroomName": "3A",
+            "Capacity": 33,
+            "TeacherId": 4
+        },
+        {
+            "Id": 4,
+            "ClassroomName": "4A",
+            "Capacity": 34,
+            "TeacherId": 5
+        },
+        {
+            "Id": 5,
+            "ClassroomName": "5A",
+            "Capacity": 35,
+            "TeacherId": 1
+        },
+        {
+            "Id": 6,
+            "ClassroomName": "6A",
+            "Capacity": 36,
+            "TeacherId": 2
+        },
+        {
+            "Id": 7,
+            "ClassroomName": "7A",
+            "Capacity": 37,
+            "TeacherId": 3
+        },
+        {
+            "Id": 8,
+            "ClassroomName": "8A",
+            "Capacity": 38,
+            "TeacherId": 4
+        },
+        {
+            "Id": 9,
+            "ClassroomName": "9A",
+            "Capacity": 39,
+            "TeacherId": 5
+        },
+        {
+            "Id": 10,
+            "ClassroomName": "10A",
+            "Capacity": 40,
+            "TeacherId": 1
+        }
+    ]    
+}

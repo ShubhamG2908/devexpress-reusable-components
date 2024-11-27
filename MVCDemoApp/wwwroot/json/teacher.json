@@ -1,0 +1,124 @@
+{
+  "Teacher": [
+    {
+      "Id": 1,
+      "FirstName": "TeacherFirstName1",
+      "LastName": "TeacherLastName1",
+      "DOB": "1971-02-12",
+      "Gender": "M",
+      "HireDate": "2011-01-11",
+      "ContactNumber": "9876543201",
+      "Email": "teacher1@school.com",
+      "Address": "101 Maple Ave",
+      "SubjectId": 2
+    },
+    {
+      "Id": 2,
+      "FirstName": "TeacherFirstName2",
+      "LastName": "TeacherLastName2",
+      "DOB": "1972-03-13",
+      "Gender": "F",
+      "HireDate": "2012-01-12",
+      "ContactNumber": "9876543202",
+      "Email": "teacher2@school.com",
+      "Address": "202 Maple Ave",
+      "SubjectId": 3
+    },
+    {
+      "Id": 3,
+      "FirstName": "TeacherFirstName3",
+      "LastName": "TeacherLastName3",
+      "DOB": "1973-04-14",
+      "Gender": "M",
+      "HireDate": "2013-01-13",
+      "ContactNumber": "9876543203",
+      "Email": "teacher3@school.com",
+      "Address": "303 Maple Ave",
+      "SubjectId": 4
+    },
+    {
+      "Id": 4,
+      "FirstName": "TeacherFirstName4",
+      "LastName": "TeacherLastName4",
+      "DOB": "1974-05-15",
+      "Gender": "F",
+      "HireDate": "2014-01-14",
+      "ContactNumber": "9876543204",
+      "Email": "teacher4@school.com",
+      "Address": "404 Maple Ave",
+      "SubjectId": 5
+    },
+    {
+      "Id": 5,
+      "FirstName": "TeacherFirstName5",
+      "LastName": "TeacherLastName5",
+      "DOB": "1975-06-16",
+      "Gender": "M",
+      "HireDate": "2015-01-15",
+      "ContactNumber": "9876543205",
+      "Email": "teacher5@school.com",
+      "Address": "505 Maple Ave",
+      "SubjectId": 1
+    },
+    {
+      "Id": 6,
+      "FirstName": "TeacherFirstName6",
+      "LastName": "TeacherLastName6",
+      "DOB": "1976-07-17",
+      "Gender": "F",
+      "HireDate": "2016-01-16",
+      "ContactNumber": "9876543206",
+      "Email": "teacher6@school.com",
+      "Address": "606 Maple Ave",
+      "SubjectId": 2
+    },
+    {
+      "Id": 7,
+      "FirstName": "TeacherFirstName7",
+      "LastName": "TeacherLastName7",
+      "DOB": "1977-08-18",
+      "Gender": "M",
+      "HireDate": "2017-01-17",
+      "ContactNumber": "9876543207",
+      "Email": "teacher7@school.com",
+      "Address": "707 Maple Ave",
+      "SubjectId": 3
+    },
+    {
+      "Id": 8,
+      "FirstName": "TeacherFirstName8",
+      "LastName": "TeacherLastName8",
+      "DOB": "1978-09-19",
+      "Gender": "F",
+      "HireDate": "2018-01-18",
+      "ContactNumber": "9876543208",
+      "Email": "teacher8@school.com",
+      "Address": "808 Maple Ave",
+      "SubjectId": 4
+    },
+    {
+      "Id": 9,
+      "FirstName": "TeacherFirstName9",
+      "LastName": "TeacherLastName9",
+      "DOB": "1979-01-10",
+      "Gender": "M",
+      "HireDate": "2019-01-10",
+      "ContactNumber": "9876543209",
+      "Email": "teacher9@school.com",
+      "Address": "909 Maple Ave",
+      "SubjectId": 5
+    },
+    {
+      "Id": 10,
+      "FirstName": "TeacherFirstName10",
+      "LastName": "TeacherLastName10",
+      "DOB": "1970-02-11",
+      "Gender": "F",
+      "HireDate": "2010-01-11",
+      "ContactNumber": "9876543210",
+      "Email": "teacher10@school.com",
+      "Address": "10010 Maple Ave",
+      "SubjectId": 1
+    }
+  ]
+}

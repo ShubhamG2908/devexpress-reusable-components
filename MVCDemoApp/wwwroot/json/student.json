@@ -1,0 +1,136 @@
+{
+  "Students": [
+    {
+      "Address": "Iscon cross road",
+      "ClassroomId": 2,
+      "ContactNumber": "1234567801",
+      "DOB": "2011-02-12",
+      "Email": "student1@email.com",
+      "EnrollmentDate": "2021-01-11",
+      "FirstName": "Raman",
+      "Gender": "M",
+      "Id": 1,
+      "LastName": "Patel"
+    },
+    {
+      "Id": 2,
+      "FirstName": "Mitesh",
+      "LastName": "Sharma",
+      "DOB": "2012-03-13",
+      "Gender": "M",
+      "ClassroomId": 3,
+      "EnrollmentDate": "2022-01-12",
+      "ContactNumber": "1234567802",
+      "Email": "student2@email.com",
+      "Address": "Mithakhali six road"
+    },
+    {
+      "Id": 3,
+      "FirstName": "Richa",
+      "LastName": "Parmar",
+      "DOB": "2013-04-14",
+      "Gender": "F",
+      "ClassroomId": 4,
+      "EnrollmentDate": "2023-01-13",
+      "ContactNumber": "1234567803",
+      "Email": "student3@email.com",
+      "Address": "Alkapuri bridge"
+    },
+    {
+      "Address": "Iscon cross road",
+      "ClassroomId": 2,
+      "ContactNumber": "1234567801",
+      "DOB": "2011-02-12",
+      "Email": "student1@email.com",
+      "EnrollmentDate": "2021-01-11",
+      "FirstName": "Raman",
+      "Gender": "M",
+      "Id": 1,
+      "LastName": "Patel"
+    },
+    {
+      "Id": 4,
+      "FirstName": "Jainish",
+      "LastName": "Barot",
+      "DOB": "2014-05-15",
+      "Gender": "M",
+      "ClassroomId": 5,
+      "EnrollmentDate": "2024-01-14",
+      "ContactNumber": "1234567804",
+      "Email": "student4@email.com",
+      "Address": "Panchvati society"
+    },
+    {
+      "Id": 5,
+      "FirstName": "Jigar",
+      "LastName": "Solanki",
+      "DOB": "2015-06-16",
+      "Gender": "M",
+      "ClassroomId": 1,
+      "EnrollmentDate": "2025-01-15",
+      "ContactNumber": "1234567805",
+      "Email": "student5@email.com",
+      "Address": "Mahundra cross road"
+    },
+    {
+      "Id": 6,
+      "FirstName": "Himanshu",
+      "LastName": "Kanodiya",
+      "DOB": "2016-07-17",
+      "Gender": "M",
+      "ClassroomId": 2,
+      "EnrollmentDate": "2026-01-16",
+      "ContactNumber": "1234567806",
+      "Email": "student6@email.com",
+      "Address": "Satyam society"
+    },
+    {
+      "Id": 7,
+      "FirstName": "Neelam",
+      "LastName": "Shah",
+      "DOB": "2017-08-18",
+      "Gender": "F",
+      "ClassroomId": 3,
+      "EnrollmentDate": "2027-01-17",
+      "ContactNumber": "1234567807",
+      "Email": "student7@email.com",
+      "Address": "Koba appartments"
+    },
+    {
+      "Id": 8,
+      "FirstName": "Amitabh",
+      "LastName": "Sharma",
+      "DOB": "2018-09-19",
+      "Gender": "M",
+      "ClassroomId": 4,
+      "EnrollmentDate": "2028-01-18",
+      "ContactNumber": "1234567808",
+      "Email": "student8@email.com",
+      "Address": "Juhu beach road"
+    },
+    {
+      "Id": 9,
+      "FirstName": "Kavita",
+      "LastName": "Joshi",
+      "DOB": "2019-01-10",
+      "Gender": "F",
+      "ClassroomId": 5,
+      "EnrollmentDate": "2029-01-10",
+      "ContactNumber": "1234567809",
+      "Email": "student9@email.com",
+      "Address": "Sola cross road"
+    },
+    {
+      "Id": 10,
+      "FirstName": "Krishna",
+      "LastName": "Mehta",
+      "DOB": "2010-02-11",
+      "Gender": "F",
+      "ClassroomId": 1,
+      "EnrollmentDate": "2020-01-11",
+      "ContactNumber": "1234567810",
+      "Email": "student10@email.com",
+      "Address": "Gokuldham society"
+    }
+  ]
+}
