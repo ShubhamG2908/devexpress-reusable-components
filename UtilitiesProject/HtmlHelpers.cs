@@ -15,14 +15,24 @@ namespace UtilitiesProject
 		/// Html rendering with specific html and return with ButtonBuilder of Devexpress. 
 		/// </summary>
 		/// <param name="Html"></param>
-		/// <param name="ButtonText"></param>
+		/// <param name="buttonText"></param>
 		/// <returns></returns>
-		internal static ButtonBuilder IPSButton(this IHtmlHelper Html, string ButtonText)
+		internal static ButtonBuilder IPSButton(this IHtmlHelper Html, string buttonText,string buttonId)
 		{
-			ButtonBuilder btn = Html.DevExtreme().Button().Text(ButtonText).Type(ButtonType.Success);
+			ButtonBuilder btn = Html.DevExtreme().Button().ID(buttonId).Text(buttonText).Type(ButtonType.Success);
 			return btn;
 		}
-		
+		internal static IHtmlContent IPSDateBoxFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, EditorApplyValueMode ApplyValueMode)
+		{
+			var res = htmlHelper.DevExtreme().DateBoxFor(expression).ApplyValueMode(ApplyValueMode).ToString();
+			return new HtmlString(res);
+		}
+
+		internal static IHtmlContent IPSDateBox<TModel>(this IHtmlHelper<TModel> htmlHelper, EditorApplyValueMode ApplyValueMode)
+		{
+			var res = htmlHelper.DevExtreme().DateBox().ApplyValueMode(ApplyValueMode).ToString();
+			return new HtmlString(res);
+		}
 
 	}
 }

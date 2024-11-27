@@ -13,13 +13,19 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div> *@
 <div>
-	@(Html.IPSButton("Button 1").ID("button1"))
-	@(Html.IPSButton("Button 2").ID("button2"))
-	@(Html.IPSButton("Button 3").ID("button3").SetDefaults())
+	@(Html.IPSButton("Button 1","button1"))
+	@(Html.IPSButton("Button 2","button2"))
+	@(Html.IPSButton("Button 3","button3").SetDefaults())
 </div>
 
 <div class="text-center">
-
+	<p>Custom Grid</p>
+	@(Html.DevExtreme().DataGrid()
+		.DataSource(Model)
+		.SetDefaults()
+		.Pager(StaticSettings.DefaultPagerConfig)
+		)
+	<p>Normal Grid</p>
 	@(Html.DevExtreme().DataGrid<Schools>
 		()
 		.ShowBorders(true)
