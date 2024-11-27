@@ -1,7 +1,10 @@
 ﻿namespace UtilitiesProject
 {
-    public class Helpers
+	public class Helpers
     {
 
     }
+
+	
+
 }
