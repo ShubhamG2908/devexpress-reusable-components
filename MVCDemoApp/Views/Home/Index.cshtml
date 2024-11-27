@@ -1,6 +1,8 @@
 ﻿@using DevExtreme.AspNet.Mvc
 @using MVCDemoApp.Data
 @using ModelsProject;
+@using UtilitiesProject;
+
 @model List<Schools>
 @{
 	ViewData["Title"] = "Reusable Components Dashboard";
@@ -10,8 +12,20 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div> *@
-<div class="text-center">
+<div>
+	@(Html.IPSButton("Button 1","button1"))
+	@(Html.IPSButton("Button 2","button2"))
+	@(Html.IPSButton("Button 3","button3").SetDefaults())
+</div>
 
+<div class="text-center">
+	<p>Custom Grid</p>
+	@(Html.DevExtreme().DataGrid()
+		.DataSource(Model)
+		.SetDefaults()
+		.Pager(StaticSettings.DefaultPagerConfig)
+		)
+	<p>Normal Grid</p>
 	@(Html.DevExtreme().DataGrid<Schools>
 		()
 		.ShowBorders(true)
