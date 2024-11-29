@@ -1,8 +1,4 @@
-﻿@using DevExtreme.AspNet.Mvc
-@using MVCDemoApp.Data
-@using ModelsProject;
-@using UtilitiesProject;
-
+﻿
 @model List<Schools>
 @{
 	ViewData["Title"] = "Reusable Components Dashboard";
@@ -13,13 +9,18 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div> *@
 <div>
-	@(Html.IPSButton("Button 1").ID("button1"))
-	@(Html.IPSButton("Button 2").ID("button2"))
-	@(Html.IPSButton("Button 3").ID("button3").SetDefaults())
+	@(Html.IPSButton("Button 1","button1"))
+	@(Html.IPSButton("Button 2","button2"))
+	@(Html.IPSButton("Button 3","button3").IPSButtonSetDefaults())
 </div>
-
 <div class="text-center">
-
+	<p>Custom Grid</p>
+	@(Html.DevExtreme().DataGrid()
+		.DataSource(Model)
+		.IPSDataGridSetDefaults()
+		.Pager(StaticSettings.IPSDataGridDefaultPagerConfig)
+		)
+	<p>Normal Grid</p>
 	@(Html.DevExtreme().DataGrid<Schools>
 		()
 		.ShowBorders(true)
@@ -39,6 +40,7 @@
 		.GroupPanel(p => p.Visible(true))
 		.Grouping(g => g.AutoExpandAll(false))
 		.RemoteOperations(true)
+		
 		.Summary(s => s
 		.TotalItems(totalItems =>
 		{

@@ -1,0 +1,33 @@
+﻿@using ModelsProject
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	ViewData["Title"] = "Reusable Components";
+
+    var list = new List<ColumnSettings>();
+    list.Add(new ColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+    list.Add(new ColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
+    list.Add(new ColumnSettings() { Caption = "RegisterDate", DataType = GridColumnDataType.Date, Field = "RegisterDate", Format = Format.MonthAndYear });
+}
+<h2 class="content-block">Default Settings defined by extending the DevExtreme configuration builders</h2>
+
+<h3 class="content-block">Default Settings in DevExtreme components</h3>
+
+<div class="contents">
+
+<partial name="Button/_ButtonComponents" />
+
+</div>
+
+<h3 class="content-block">Html Helper that generates two DateBoxes connected with each other</h3>
+@(Html.SynchronizedDateBoxes())
+
+
+@model List<Schools>
+@(Html.IPSDataGrid<Schools>(Model, SchoolData.SchoolsList, list,"Home","Id" ))
+
+
+
+
