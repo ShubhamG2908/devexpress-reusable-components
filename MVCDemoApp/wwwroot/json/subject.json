@@ -1,0 +1,64 @@
+{
+  "Subject": [
+    {
+      "Id": 1,
+      "SubjectName": "Maths",
+      "Credits": 2,
+      "Description": "Description of Maths."
+    },
+    {
+      "Id": 2,
+      "SubjectName": "Science",
+      "Credits": 3,
+      "Description": "Description of Science."
+    },
+    {
+      "Id": 3,
+      "SubjectName": "Social Studies",
+      "Credits": 4,
+      "Description": "Description of Social Studies."
+    },
+    {
+      "Id": 4,
+      "SubjectName": "Gujarati",
+      "Credits": 5,
+      "Description": "Description of Gujarati."
+    },
+    {
+      "Id": 5,
+      "SubjectName": "English",
+      "Credits": 1,
+      "Description": "Description of English."
+    },
+    {
+      "Id": 6,
+      "SubjectName": "Basic Electronics",
+      "Credits": 2,
+      "Description": "Description of Basic Electronics."
+    },
+    {
+      "Id": 7,
+      "SubjectName": "Drawing",
+      "Credits": 3,
+      "Description": "Description of Drawing."
+    },
+    {
+      "Id": 8,
+      "SubjectName": "Management",
+      "Credits": 4,
+      "Description": "Description of Management."
+    },
+    {
+      "Id": 9,
+      "SubjectName": "Advanced Java Technology",
+      "Credits": 5,
+      "Description": "Description of Advanced Java Technology."
+    },
+    {
+      "Id": 10,
+      "SubjectName": "Hindi",
+      "Credits": 1,
+      "Description": "Description of Hindi."
+    }
+  ]
+}
