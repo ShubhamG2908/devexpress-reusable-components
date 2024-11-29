@@ -28,12 +28,7 @@ namespace MVCDemoApp.Controllers
 		{
 			return View();
 		}
-        public IActionResult Components()
-        {
-            var model = SchoolData.SchoolsList;
-            return View(model);
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
