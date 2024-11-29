@@ -76,11 +76,11 @@ namespace UtilitiesProject
 		/// </summary>
 		/// <typeparam name="TModel"></typeparam>
 		/// <param name="htmlHelper"></param>
-		/// <param name="ApplyValueMode"></param>
+		/// <param name="applyValueMode"></param>
 		/// <returns></returns>
-		internal static IHtmlContent IPSDateBox<TModel>(this IHtmlHelper<TModel> htmlHelper, EditorApplyValueMode ApplyValueMode)
+		internal static IHtmlContent IPSDateBox<TModel>(this IHtmlHelper<TModel> htmlHelper, EditorApplyValueMode applyValueMode)
 		{
-			var res = htmlHelper.DevExtreme().DateBox().ApplyValueMode(ApplyValueMode).ToString();
+			var res = htmlHelper.DevExtreme().DateBox().ApplyValueMode(applyValueMode).ToString();
 			return new HtmlString(res);
 		}
 
@@ -91,15 +91,15 @@ namespace UtilitiesProject
 		/// <summary>                   
 		/// Synchronized Date Boxes
 		/// </summary>
-		/// <param name="Html"></param>
+		/// <param name="html"></param>
 		/// <returns></returns>
-		internal static IHtmlContent SynchronizedDateBoxes(this IHtmlHelper Html)
+		internal static IHtmlContent SynchronizedDateBoxes(this IHtmlHelper html)
 		{
-			string startDateBox = Html.DevExtreme().DateBox().ID("startDate")
+			string startDateBox = html.DevExtreme().DateBox().ID("startDate")
 				.Value(DateTime.Now)
 				.OnValueChanged("function(e){  var endDate= $('#endDate').dxDateBox('instance'); endDate.option('min', e.value);}")
 				.ToString();
-			string endDateBox = Html.DevExtreme().DateBox().ID("endDate")
+			string endDateBox = html.DevExtreme().DateBox().ID("endDate")
 				 .Value(DateTime.Now)
 
 				 .OnValueChanged("function(e){  var startDate= $('#startDate').dxDateBox('instance'); endDate.option('max', e.value);}")

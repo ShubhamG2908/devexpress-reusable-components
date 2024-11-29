@@ -34,20 +34,6 @@ namespace UtilitiesProject
 			return button;
 		}
 
-		/// <summary>
-		/// Need to add some action on button that time used this settings
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="column"></param>
-		/// <param name="Html"></param>
-		/// <returns></returns>
-		internal static DataGridColumnBuilder<T> IPSAddActionColumn<T>(this DataGridColumnBuilder<T> column, IHtmlHelper Html)
-		{
-			var button = Html.DevExtreme().Button().StylingMode(ButtonStylingMode.Text).Text(new JS("value"));
-			column.CellTemplate(String.Format("<text> <div><b>Row key is: <%= row.key %> </b> </div>{0}</text>", button.ToTemplate()));
-			return column;
-		}
-
 		#endregion
 
 		#region Datagrid component Settings
@@ -136,6 +122,20 @@ namespace UtilitiesProject
 			builder.ShowInfo(true);
 		};
 
+		/// <summary>
+		/// Need to add some action on button that time used this settings
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="column"></param>
+		/// <param name="html"></param>
+		/// <returns></returns>
+		internal static DataGridColumnBuilder<T> IPSAddActionColumn<T>(this DataGridColumnBuilder<T> column, IHtmlHelper html)
+		{
+			var button = html.DevExtreme().Button().StylingMode(ButtonStylingMode.Text).Text(new JS("value"));
+			column.CellTemplate(String.Format("<text> <div><b>Row key is: <%= row.key %> </b> </div>{0}</text>", button.ToTemplate()));
+			return column;
+		}
+
 		#endregion
 
 		#region SelectBox or Dropdown or Toolbar components Settings
@@ -144,14 +144,14 @@ namespace UtilitiesProject
 		/// Look up editor for drop down box or select box or toolbar item
 		/// </summary>
 		/// <param name="toolbar"></param>
-		/// <param name="Html"></param>
+		/// <param name="html"></param>
 		/// <param name="controllerName"></param>
 		/// <param name="key"></param>
 		/// <param name="displayExpr"></param>
 		/// <returns></returns>
-		internal static SelectBoxBuilder IPSLookupEditor(this ToolbarItemFactory toolbar, IHtmlHelper Html, string controllerName, string key, string displayExpr)
+		internal static SelectBoxBuilder IPSLookupEditor(this ToolbarItemFactory toolbar, IHtmlHelper html, string controllerName, string key, string displayExpr)
 		{
-			SelectBoxBuilder lookup = Html.DevExtreme().SelectBox();
+			SelectBoxBuilder lookup = html.DevExtreme().SelectBox();
 			lookup.DataSource(d => d.Mvc().Controller(controllerName).LoadAction("Get").Key(key));
 			lookup.DisplayExpr(displayExpr);
 			lookup.ValueExpr(key);
