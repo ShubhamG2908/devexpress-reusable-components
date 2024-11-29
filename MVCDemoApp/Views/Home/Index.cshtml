@@ -1,8 +1,4 @@
-﻿@using DevExtreme.AspNet.Mvc
-@using MVCDemoApp.Data
-@using ModelsProject;
-@using UtilitiesProject;
-
+﻿
 @model List<Schools>
 @{
 	ViewData["Title"] = "Reusable Components Dashboard";
@@ -15,15 +11,14 @@
 <div>
 	@(Html.IPSButton("Button 1","button1"))
 	@(Html.IPSButton("Button 2","button2"))
-	@(Html.IPSButton("Button 3","button3").SetDefaults())
+	@(Html.IPSButton("Button 3","button3").IPSButtonSetDefaults())
 </div>
-
 <div class="text-center">
 	<p>Custom Grid</p>
 	@(Html.DevExtreme().DataGrid()
 		.DataSource(Model)
-		.SetDefaults()
-		.Pager(StaticSettings.DefaultPagerConfig)
+		.IPSDataGridSetDefaults()
+		.Pager(StaticSettings.IPSDataGridDefaultPagerConfig)
 		)
 	<p>Normal Grid</p>
 	@(Html.DevExtreme().DataGrid<Schools>
@@ -45,6 +40,7 @@
 		.GroupPanel(p => p.Visible(true))
 		.Grouping(g => g.AutoExpandAll(false))
 		.RemoteOperations(true)
+		
 		.Summary(s => s
 		.TotalItems(totalItems =>
 		{
