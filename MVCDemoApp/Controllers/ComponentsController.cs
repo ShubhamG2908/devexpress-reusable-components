@@ -22,10 +22,21 @@ namespace MVCDemoApp.Controllers
 			return View();
 		}
 
-		public IActionResult ButtonComponents()
+        public IActionResult Buttons()
+        {
+            return View();
+        }
+        public IActionResult DataGrid()
+        {
+            return View();
+        }
+
+        public IActionResult ButtonComponents()
 		{
 			return PartialView("Button/_ButtonComponents.cshtml");
 		}
+
+        #region Partial View DataGrid call
 
         private List<Schools> GetSchoolListFromCache()
         {
@@ -55,7 +66,7 @@ namespace MVCDemoApp.Controllers
         }
 
         [HttpGet]
-        public object GetClassroomsBySchool(int schoolId,DataSourceLoadOptions options)
+        public object GetClassroomsBySchool(int schoolId, DataSourceLoadOptions options)
         {
             var classRooms = ClassroomData.ClassroomsList.Where(w => w.SchoolId == schoolId).ToList();
             return DataSourceLoader.Load(classRooms, options);
@@ -68,5 +79,6 @@ namespace MVCDemoApp.Controllers
             return DataSourceLoader.Load(teachers, options);
         }
 
+        #endregion
     }
 }

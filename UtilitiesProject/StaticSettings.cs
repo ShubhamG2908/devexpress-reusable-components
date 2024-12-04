@@ -76,7 +76,7 @@ namespace UtilitiesProject
 			grid.ShowBorders(false);
 			grid.FilterRow(f => f.Visible(true));
 			grid.ColumnHidingEnabled(true);
-			if (listColumns != null && listColumns.Count > 0) { grid.Columns(columns => { IPSConfigureColumns<T>(columns, listColumns); }); }
+			if (listColumns != null && listColumns.Count > 0) { grid.Columns(columns => { IPSDataGridConfigureColumns<T>(columns, listColumns); }); }
 			grid.Pager(IPSDataGridDefaultPagerConfig);
 			return grid;
 		}
@@ -87,7 +87,7 @@ namespace UtilitiesProject
 		/// <typeparam name="T"></typeparam>
 		/// <param name="columns"></param>
 		/// <param name="myColumns"></param>
-		internal static void IPSConfigureColumns<T>(CollectionFactory<DataGridColumnBuilder<T>> columns, List<GridColumnSettings> myColumns)
+		internal static void IPSDataGridConfigureColumns<T>(CollectionFactory<DataGridColumnBuilder<T>> columns, List<GridColumnSettings> myColumns)
 		{
 			foreach (var def in myColumns)
 			{
@@ -108,7 +108,7 @@ namespace UtilitiesProject
 		/// <param name="key"></param>
 		/// <param name="displayExpr"></param>
 		/// <returns></returns>
-		internal static DataGridColumnBuilder<T> IPSsAddLookupConfig<T>(this DataGridColumnBuilder<T> column, string controllerName, string key, string displayExpr)
+		internal static DataGridColumnBuilder<T> IPSDataGridAddLookupConfig<T>(this DataGridColumnBuilder<T> column, string controllerName, string key, string displayExpr)
 		{
 			column.Lookup((lookup) =>
 			{
@@ -137,7 +137,7 @@ namespace UtilitiesProject
 		/// <param name="column"></param>
 		/// <param name="html"></param>
 		/// <returns></returns>
-		internal static DataGridColumnBuilder<T> IPSAddActionColumn<T>(this DataGridColumnBuilder<T> column, IHtmlHelper html)
+		internal static DataGridColumnBuilder<T> IPSDataGridAddActionColumn<T>(this DataGridColumnBuilder<T> column, IHtmlHelper html)
 		{
 			var button = html.DevExtreme().Button().StylingMode(ButtonStylingMode.Text).Text(new JS("value"));
 			column.CellTemplate(String.Format("<text> <div><b>Row key is: <%= row.key %> </b> </div>{0}</text>", button.ToTemplate()));
