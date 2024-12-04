@@ -41,11 +41,11 @@ namespace UtilitiesProject
 		/// <param name="controllerName"></param>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, List<T> datasourceCollection = null, List<ColumnSettings> listColumns = null, string controllerName = "", string key = "")
+		internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "", string action = "Get", object parameters = null)
 		{
 			DataGridBuilder<T> dgb = grid.DevExtreme().DataGrid<T>()
 				.DataSource(datasourceCollection)
-				.IPSDataGridSetDefaults(datasourceCollection, listColumns, controllerName, key);
+				.IPSDataGridSetDefaults(datasourceCollection, listColumns, controllerName, key,action,parameters);
 			return dgb;
 		}
 		#endregion

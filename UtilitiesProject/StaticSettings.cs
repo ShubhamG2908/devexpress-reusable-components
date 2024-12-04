@@ -48,15 +48,23 @@ namespace UtilitiesProject
 		/// <param name="controllerName"></param>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, List<T> datasourceCollection = null, List<ColumnSettings> listColumns = null, string controllerName = "", string key = "")
+		internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "",string action = "Get",object parameters = null)
 		{
 			//this will use while calling from controller methods and key.
-			if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key))
-			{
-				grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction("Get").Key(key));
-			}
-			//this will use while calling from list of collection that time passed that directly to datasource.
-			if (datasourceCollection != null && datasourceCollection.Count > 0) { grid.DataSource(datasourceCollection); }
+			if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key) && parameters != null) //must have controller, key and parameters
+            {
+                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(parameters).Key(key));
+            }
+			else if (!string.IsNullOrWhiteSpace(controllerName) && string.IsNullOrWhiteSpace(key) && parameters != null) //must have controller and parameters
+            {
+                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(parameters));
+            }
+            else if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key)) //must have controller ands key
+            {
+                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).Key(key));
+            }
+            //this will use while calling from list of collection that time passed that directly to datasource.
+            if (datasourceCollection != null && datasourceCollection.Count > 0) { grid.DataSource(datasourceCollection); }
 
 			//default configuration. If need any changes then pass param and call it whenever use.
 			grid.FocusedRowEnabled(true);
@@ -79,7 +87,7 @@ namespace UtilitiesProject
 		/// <typeparam name="T"></typeparam>
 		/// <param name="columns"></param>
 		/// <param name="myColumns"></param>
-		internal static void IPSConfigureColumns<T>(CollectionFactory<DataGridColumnBuilder<T>> columns, List<ColumnSettings> myColumns)
+		internal static void IPSConfigureColumns<T>(CollectionFactory<DataGridColumnBuilder<T>> columns, List<GridColumnSettings> myColumns)
 		{
 			foreach (var def in myColumns)
 			{

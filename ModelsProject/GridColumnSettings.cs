@@ -9,7 +9,7 @@ using DevExtreme.AspNet.Mvc;
 [assembly: InternalsVisibleTo("UtilitiesProject")]
 namespace ModelsProject
 {
-	internal class ColumnSettings
+	internal class GridColumnSettings
 	{
 		public GridColumnDataType DataType { get; set; }
 		public string Field { get; set; }
