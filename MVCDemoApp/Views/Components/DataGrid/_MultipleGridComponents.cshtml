@@ -1,0 +1,73 @@
+﻿
+@{
+    var schoolList = new List<GridColumnSettings>();
+    schoolList.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+    schoolList.Add(new GridColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
+    schoolList.Add(new GridColumnSettings() { Caption = "RegisterDate", DataType = GridColumnDataType.Date, Field = "RegisterDate", Format = Format.MonthAndYear });
+    schoolList.Add(new GridColumnSettings() { Caption = "City", DataType = GridColumnDataType.String, Field = "City" });
+    schoolList.Add(new GridColumnSettings() { Caption = "Country", DataType = GridColumnDataType.String, Field = "Country" });
+
+    
+}
+@model List<Schools>
+
+@(Html.IPSDataGrid<Schools>(Model,null, schoolList, "Components", "Id", "GetSchools")
+
+    .MasterDetail(m => m
+        .Enabled(true)
+        .Template(new TemplateName("gridContainer-details"))
+    )
+    )
+@using (Html.DevExtreme().NamedTemplate("gridContainer-details"))
+{
+    @(Html.DevExtreme().TabPanel()
+            .Items(items =>
+            {
+                items.Add()
+                    .Title("Class Room")
+                    .Template(new TemplateName("gridContainer-details-tab1Template"))
+                    .Option("tabExtras", new { schoolId = new JS("data.Id") });
+
+                items.Add()
+                    .Title("Address")
+                    .Template(new TemplateName("gridContainer-details-tab2Template"))
+                    .Option("tabExtras", new JS("data"));
+            })
+        )
+}
+@using (Html.DevExtreme().NamedTemplate("gridContainer-details-tab1Template"))
+{
+    @(Html.DevExtreme().Form()
+            .ElementAttr("class", "form-container")
+            .FormData(new JS("tabExtras"))
+            .LabelLocation(FormLabelLocation.Left)
+            .Items(items =>
+            {
+                items.AddSimple()
+                    .Label(l => l.Text("Class Room Detail"))
+                    .Template(new TemplateName("gridContainer-details-tab1-gridTemplate"));
+            })
+        )
+}
+@using (Html.DevExtreme().NamedTemplate("gridContainer-details-tab1-gridTemplate"))
+{
+    var parameters = new
+    {
+        schoolId = new JS("function() { return component.option('formData').schoolId }")
+    };
+    var classRoomList = new List<GridColumnSettings>();
+    schoolList.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+    schoolList.Add(new GridColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
+    schoolList.Add(new GridColumnSettings() { Caption = "Description", DataType = GridColumnDataType.String, Field = "Description" });
+    schoolList.Add(new GridColumnSettings() { Caption = "Capacity", DataType = GridColumnDataType.Number, Field = "Capacity", Format = Format.FixedPoint });
+    schoolList.Add(new GridColumnSettings() { Caption = "TeacherId", DataType = GridColumnDataType.Number, Field = "TeacherId", Format = Format.FixedPoint });
+    schoolList.Add(new GridColumnSettings() { Caption = "SchoolId", DataType = GridColumnDataType.Number, Field = "SchoolId", Format = Format.FixedPoint });
+
+    @(
+        Html.IPSDataGrid<Classrooms>(Model, null, classRoomList, "Components", "Id", "GetClassroomsBySchool",parameters)
+     )
+
+    
+}
+
+

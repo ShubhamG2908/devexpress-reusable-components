@@ -1,0 +1,15 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var list = new List<GridColumnSettings>();
+    list.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+    list.Add(new GridColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
+    list.Add(new GridColumnSettings() { Caption = "RegisterDate", DataType = GridColumnDataType.Date, Field = "RegisterDate", Format = Format.MonthAndYear });
+}
+<h2 class="content-block">Default Settings defined by extending the DevExtreme configuration builders</h2>
+
+<h3 class="content-block">Default Settings in DevExtreme components</h3>
+
+@model List<Schools>
+@(Html.IPSDataGrid<Schools>(Model, SchoolData.SchoolsList, list, "Home", "Id"))
