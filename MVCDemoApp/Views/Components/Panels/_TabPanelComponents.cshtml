@@ -1,0 +1,135 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+
+    var tabsPositions = new[] {
+        "left",
+        "top",
+        "right",
+        "bottom"
+    };
+
+    var stylingModes = new[] {
+        "secondary",
+        "primary"
+    };
+
+    var iconPositions = new[] {
+        "top",
+        "start",
+        "end",
+        "bottom"
+    };
+
+    var tabPanelItems = new List<TabPanelItemsSettings>();
+    // tabPanelItems.Add(new TabPanelItemsSettings() { Title = "Class Room", TemplateNameOrContent = "gridContainer-details-tab1Template", OptionKey = "tabExtras", OtionValue = new { schoolId = new JS("data.Id") } });
+
+    //this is text content.
+    tabPanelItems.Add(new TabPanelItemsSettings() { Title = "Teacher Detail", Text = "<h1>Text 1 </h1>" });
+    tabPanelItems.Add(new TabPanelItemsSettings() { Title = "Teacher Detail", Text = "<h1>Text 2 </h1>" });
+
+}
+<h3 class="content-block">Dynamic call tab panel</h3>
+
+
+@* @(Html.IPSTabPanel("tbDynamic", "", tabPanelItems)) *@
+
+@model List<TabPanelItem>
+<div class="tabpanel-demo">
+    <div class="widget-container">
+        @(Html.IPSTabPanel("tabpanel", "", null, "Components", "", "GetTabPanelList", null, Position.Left, TabsStyle.Primary, TabsIconPosition.Start).ItemTemplate(new JS("tabPanelTemplate"))
+        )
+
+        
+    </div>
+
+    <div class="options">
+        <div class="caption">Options</div>
+
+        <div class="option">
+            <div class="option-label">Tab position</div>
+
+            @(Html.DevExtreme().SelectBox()
+                .DataSource(tabsPositions)
+                .Value("left")
+                .InputAttr("aria-label", "Tab position")
+                .OnValueChanged("tabsPositionChanged")
+                )
+        </div>
+
+        <div class="option">
+            <div class="option-label">Styling mode</div>
+
+            @(Html.DevExtreme().SelectBox()
+                .DataSource(stylingModes)
+                .Value("secondary")
+                .InputAttr("aria-label", "Styling mode")
+                .OnValueChanged("stylingModeChanged")
+                )
+        </div>
+
+        <div class="option">
+            <div class="option-label">Icon position</div>
+
+            @(Html.DevExtreme().SelectBox()
+                .DataSource(iconPositions)
+                .Value("top")
+                .InputAttr("aria-label", "Icon positions")
+                .OnValueChanged("iconPositionChanged")
+                )
+        </div>
+    </div>
+</div>
+
+<script>
+    const taskItem = (task) => {
+        const className = `task-item task-item-priority-${task.priority}`;
+
+        return `
+                    <div class="${className}">
+                        <span class="task-item-text">
+                            ${task.text}
+                        </span>
+
+                        <span class="task-item-info">
+                            ${task.date} by ${task.assignedBy}
+                        </span>
+
+                        <i class="task-item-pseudo-button dx-icon dx-icon-overflow"></i>
+                    </div>
+                `;
+    };
+
+    const taskList = (tasks) => {
+        const list = tasks.reduce((accumulator, task) => `${accumulator} ${taskItem(task)}`, '');
+
+        return `
+                    <div class="tabpanel-item">
+                        ${list}
+                    </div>
+                `;
+    };
+
+    function tabPanelTemplate({ tasks }) {
+        return taskList(tasks)
+    }
+
+    function getTabPanelInstance() {
+        return $("#tabpanel").dxTabPanel("instance");
+    }
+
+    function tabsPositionChanged({ value }) {
+        getTabPanelInstance().option({ tabsPosition: value });
+    }
+
+    function stylingModeChanged({ value }) {
+        getTabPanelInstance().option({ stylingMode: value });
+    }
+
+    function iconPositionChanged({ value }) {
+        getTabPanelInstance().option({ iconPosition: value });
+    }
+</script>
+

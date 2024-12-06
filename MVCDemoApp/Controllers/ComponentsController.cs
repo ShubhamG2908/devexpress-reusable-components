@@ -6,6 +6,9 @@ using ModelsProject;
 using MVCDemoApp.Data;
 using MVCDemoApp.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MVCDemoApp.Controllers
 {
@@ -22,6 +25,8 @@ namespace MVCDemoApp.Controllers
 			return View();
 		}
 
+        #region Components
+
         public IActionResult Buttons()
         {
             return View();
@@ -30,6 +35,12 @@ namespace MVCDemoApp.Controllers
         {
             return View();
         }
+
+        public IActionResult Tabs()
+        {
+            return View();
+        } 
+        #endregion
 
         public IActionResult ButtonComponents()
 		{
@@ -77,6 +88,12 @@ namespace MVCDemoApp.Controllers
         {
             var teachers = TeacherData.TeachersList.Where(w => w.ClassroomId == classRoomId).ToList();
             return DataSourceLoader.Load(teachers, options);
+        }
+		[HttpGet]
+		public object GetTabPanelList(DataSourceLoadOptions options)
+        {
+            var tabPanelItems = TabPanelData.TabPanelItems.ToList();
+            return DataSourceLoader.Load(tabPanelItems, options);
         }
 
         #endregion

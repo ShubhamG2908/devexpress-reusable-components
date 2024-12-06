@@ -108,8 +108,30 @@ namespace UtilitiesProject
 			return new HtmlString(res);
 		}
 
-		#endregion
+        #endregion
 
-		
-	}
+
+        #region TabPanel component html
+        /// <summary>
+        /// This is used for tab section default settings.
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="controlId"></param>
+        /// <param name="accessKey"></param>
+        /// <param name="tabPanelItemsSettings"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="key"></param>
+        /// <param name="action"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        internal static TabPanelBuilder IPSTabPanel(this IHtmlHelper html, string controlId = "tbPanelId", string accessKey = "", List<TabPanelItemsSettings> tabPanelItemsSettings = null, string controllerName = "", string key = "", string action = "Get", object parameters = null,
+            Position position = Position.Left, TabsStyle tabsStyle = TabsStyle.Primary, TabsIconPosition tabsIconPosition = TabsIconPosition.Start)
+		{
+            TabPanelBuilder tbPanel = html.DevExtreme().TabPanel().IPSSetTabPanelSetDefaults(controlId, accessKey, tabPanelItemsSettings,controllerName,key,action,parameters);
+			return tbPanel;
+		}
+
+        #endregion
+
+    }
 }

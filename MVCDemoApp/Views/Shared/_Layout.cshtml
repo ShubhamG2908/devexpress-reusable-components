@@ -120,19 +120,20 @@
             &copy; 2024 - MVCDemoApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {
             // $("#apptheme option[value='Gateway 2']").prop('selected', true);
-            $("#apptheme").dxSelectBox("instance").option("value", "dx.dark.css")
+
             // you need to specify id of combo to set right combo, if more than one combo
         });
         function changeTheme(e) {
             var selectedTheme = e.component.option("value");            
             document.cookie = "currentTheme=" + selectedTheme + ";path=/";
-            $("#apptheme option[value='" + selectedTheme + "']").prop('selected', true);
+            // $("#apptheme option[value='" + selectedTheme + "']").prop('selected', true);
+            $("#apptheme").dxSelectBox("instance").option("value", selectedTheme);
              window.location.reload();
         }
     </script>
