@@ -1,0 +1,154 @@
+﻿@using ModelsProject
+@model List<MenuItem>
+
+    @*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    *@
+    @{
+    ViewData["Title"] = "Reusable Components";
+
+
+    }
+    <div class="nav-fill">
+        <partial name="_Menu" />
+    </div>
+
+    <div class="form">
+        <div>
+            <div class="label">Catalog:</div>
+            @(Html.DevExtreme().Menu()
+            .ID("menu")
+            .DataSource(d => d.Mvc().Controller("Components").LoadAction("GetMenus"))
+            @* .HideSubmenuOnMouseLeave(false) *@
+            @* .OnItemClick("menuItem_click") *@
+            )
+            @* <div id="product-details" class="hidden">
+                <img src="" />
+                <div class="name"></div>
+                <div class="price"></div>
+            </div> *@
+        </div>
+        @*  <div class="options">
+            <div class="caption">Options</div>
+            <div class="option">
+                <div>Show First Submenu Mode</div>
+                @(Html.DevExtreme().SelectBox()
+                .DataSource(new JS("showSubmenuModes"))
+                .InputAttr("aria-label", "Submenu Mode")
+                .Value(new JS("showSubmenuModes[0]"))
+                .DisplayExpr("name")
+                .OnValueChanged("firstSubMenuMode_changed")
+                )
+            </div>
+            <div class="option">
+                <div>Orientation</div>
+                @(Html.DevExtreme().SelectBox()
+                .DataSource(new[] { "horizontal", "vertical" })
+                .InputAttr("aria-label", "Orientation")
+                .Value("horizontal")
+                .OnValueChanged("menuOrientation_changed")
+                )
+            </div>
+            <div class="option">
+                @(Html.DevExtreme().CheckBox()
+                .Value(false)
+                .Text("Hide Submenu on Mouse Leave")
+                .OnValueChanged("checkBoxValue_changed")
+                )
+            </div>
+        </div> *@
+    </div>
+
+    <script>
+        // var showSubmenuModes = [{
+        //     name: "onHover",
+        //     delay: { show: 0, hide: 500 }
+        // }, {
+        //     name: "onClick",
+        //     delay: { show: 0, hide: 300 }
+        // }];
+
+        // function getMenuInstance() {
+        //     return $("#menu").dxMenu("instance");
+        // }
+
+        // function menuItem_click(data) {
+        //     var item = data.itemData;
+        //     // if (item.price) {
+        //     //     $("#product-details").removeClass("hidden");
+        //     //     // $("#product-details > img").attr("src", item.icon);
+        //     //     // $("#product-details > .price").text("$" + item.price);
+        //     //     $("#product-details > .name").text(item.text);
+        //     // }
+        //     $("#product-details > .name").text(item.text);
+        // }
+
+        // function firstSubMenuMode_changed(data) {
+        //     getMenuInstance().option("showFirstSubmenuMode", data.value);
+        // }
+
+        // function menuOrientation_changed(data) {
+        //     getMenuInstance().option("orientation", data.value);
+        // }
+
+        // function checkBoxValue_changed(data) {
+        //     getMenuInstance().option("hideSubmenuOnMouseLeave", data.value);
+        // }
+    </script>
+
+
+    <div class="form">
+        <div>
+            <div class="label">Catalog:</div>
+            @(Html.DevExtreme().Menu()
+            .ID("menu")
+            .DataSource(d => d.Mvc().Controller("Components").LoadAction("GetMenus"))
+            .Items(items =>
+            {
+            foreach (var menuItem in Model.ToList()) // yourMenuItemsList is of type List<ModelsProject.MenuItem>
+                {
+
+                items.Add().Text(menuItem.Text) // Assuming your `ModelsProject.MenuItem` has a `Text` property
+                .Icon(menuItem.Icon) // Assuming your `ModelsProject.MenuItem` has an `Icon` property
+                .Url(menuItem.Url); // Assuming your `ModelsProject.MenuItem` has a `Url` property
+                }
+                })
+                @* .HideSubmenuOnMouseLeave(false) *@
+                @* .OnItemClick("menuItem_click") *@
+                )
+                @* <div id="product-details" class="hidden">
+                    <img src="" />
+                    <div class="name"></div>
+                    <div class="price"></div>
+                </div> *@
+        </div>
+        @*  <div class="options">
+            <div class="caption">Options</div>
+            <div class="option">
+                <div>Show First Submenu Mode</div>
+                @(Html.DevExtreme().SelectBox()
+                .DataSource(new JS("showSubmenuModes"))
+                .InputAttr("aria-label", "Submenu Mode")
+                .Value(new JS("showSubmenuModes[0]"))
+                .DisplayExpr("name")
+                .OnValueChanged("firstSubMenuMode_changed")
+                )
+            </div>
+            <div class="option">
+                <div>Orientation</div>
+                @(Html.DevExtreme().SelectBox()
+                .DataSource(new[] { "horizontal", "vertical" })
+                .InputAttr("aria-label", "Orientation")
+                .Value("horizontal")
+                .OnValueChanged("menuOrientation_changed")
+                )
+            </div>
+            <div class="option">
+                @(Html.DevExtreme().CheckBox()
+                .Value(false)
+                .Text("Hide Submenu on Mouse Leave")
+                .OnValueChanged("checkBoxValue_changed")
+                )
+            </div>
+        </div> *@
+    </div>

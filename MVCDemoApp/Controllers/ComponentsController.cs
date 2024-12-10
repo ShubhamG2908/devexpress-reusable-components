@@ -39,7 +39,18 @@ namespace MVCDemoApp.Controllers
         public IActionResult Tabs()
         {
             return View();
-        } 
+        }
+
+        public IActionResult NavMenu()
+        {
+            var model = MenuData.CustomMenus;
+            return View(model);
+        }
+        public IActionResult InnerMenu()
+        {
+            var model = MenuData.CustomMenus;
+            return View(model);
+        }
         #endregion
 
         public IActionResult ButtonComponents()
@@ -96,6 +107,13 @@ namespace MVCDemoApp.Controllers
             return DataSourceLoader.Load(tabPanelItems, options);
         }
 
-        #endregion
-    }
+
+		[HttpGet]
+		public object GetMenus(DataSourceLoadOptions loadOptions)
+		{
+			return DataSourceLoader.Load(MenuData.CustomMenus, loadOptions);
+		}
+
+		#endregion
+	}
 }

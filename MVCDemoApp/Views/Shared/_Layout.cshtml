@@ -7,7 +7,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MVCDemoApp.styles.css" asp-append-version="true" />
-    @* <link href="~/css/devextreme/dx.light.css" rel="stylesheet" /> *@
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    @{
+        string theme = string.IsNullOrEmpty(Context.Request.Cookies["currentTheme"]) ? "dx.light.css" : Context.Request.Cookies["currentTheme"];
+    }
+    <link href="~/css/devextreme/@theme" rel="stylesheet" />
+
+    @* <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true" /> *@
+
     @* <link href="~/css/devextreme/dx.dark.css" rel="stylesheet" /> *@
 
     @* <link rel="stylesheet" href="~/css/Site.css" /> *@
@@ -19,7 +28,7 @@
     @*<script src="~/js/devextreme/dx-diagram.js"></script>*@
 
     <script src="~/js/devextreme/jquery.js"></script>
-    <script src="~/js/devextreme/bootstrap.js"></script>
+    @* <script src="~/js/devextreme/bootstrap.js"></script> *@
 
     @* Uncomment to use Globalize for localization *@
     @* Docs: https://docs.devexpress.com/AspNetCore/400577#globalize *@
@@ -34,7 +43,7 @@
     @*<script src="~/js/devextreme/globalize/date.js"></script>*@
 
     @* Uncomment to enable client-side export *@
-    @*<script src="~/js/devextreme/jszip.js"></script>*@
+    <script src="~/js/devextreme/jszip.js"></script>
 
     <script src="~/js/devextreme/dx.all.js"></script>
 
@@ -44,10 +53,7 @@
 
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
-    @{
-        string theme = string.IsNullOrEmpty(Context.Request.Cookies["currentTheme"]) ? "dx.light.css" : Context.Request.Cookies["currentTheme"];
-    }
-    <link href="~/css/devextreme/@theme" rel="stylesheet" />
+    
 </head>
 <body class="dx-viewport">
     <header>
