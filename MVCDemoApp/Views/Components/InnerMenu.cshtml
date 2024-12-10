@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Inner Menu";
+}
+
+<h2>Inner Menu</h2>
+
+@(Html.DevExtreme().TreeList<MenuItem>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Components")
+        .LoadAction("GetMenus")
+        .Key("Id")
+    )
+    
+    //.RootValue(0)
+    //.ParentIdExpr("TODO")
+    //.RemoteOperations(o => o.Filtering(true).Grouping(true).Sorting(true))
+    .Columns(columns => {
+
+        columns.AddFor(m => m.Id);
+        columns.AddFor(m => m.Text);
+
+        columns.AddFor(m => m.Disabled);
+
+        columns.AddFor(m => m.Icon);
+
+        columns.AddFor(m => m.Url);
+    })
+)

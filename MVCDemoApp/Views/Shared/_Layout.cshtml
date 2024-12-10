@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MVCDemoApp.styles.css" asp-append-version="true" />
     <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    @{
+        string theme = string.IsNullOrEmpty(Context.Request.Cookies["currentTheme"]) ? "dx.light.css" : Context.Request.Cookies["currentTheme"];
+    }
+    <link href="~/css/devextreme/@theme" rel="stylesheet" />
+
+    @* <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true" /> *@
+
+    @* <link href="~/css/devextreme/dx.dark.css" rel="stylesheet" /> *@
 
     @* <link rel="stylesheet" href="~/css/Site.css" /> *@
 
@@ -18,7 +28,7 @@
     @*<script src="~/js/devextreme/dx-diagram.js"></script>*@
 
     <script src="~/js/devextreme/jquery.js"></script>
-    <script src="~/js/devextreme/bootstrap.js"></script>
+    @* <script src="~/js/devextreme/bootstrap.js"></script> *@
 
     @* Uncomment to use Globalize for localization *@
     @* Docs: https://docs.devexpress.com/AspNetCore/400577#globalize *@
@@ -33,7 +43,7 @@
     @*<script src="~/js/devextreme/globalize/date.js"></script>*@
 
     @* Uncomment to enable client-side export *@
-    @*<script src="~/js/devextreme/jszip.js"></script>*@
+    <script src="~/js/devextreme/jszip.js"></script>
 
     <script src="~/js/devextreme/dx.all.js"></script>
 
@@ -43,8 +53,9 @@
 
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    
 </head>
-<body>
+<body class="dx-viewport">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -62,7 +73,42 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Components">Components</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Components" asp-action="Index">Components</a>
+                        </li>
+                        <li class="nav-item">
+                            @(Html.DevExtreme().SelectBox()
+                                .ID("apptheme")
+                                .ValueExpr("theme")
+                                .DisplayExpr("name")
+                                .DataSource(new object[] {
+                                        new { name = "Bootstrap", theme = "bootstrap.css", selected = true},
+                            new { name = "Carmine", theme = "dx.carmine.css", selected = false},
+                            new { name = "Contrast", theme = "dx.contrast.css", selected = false},
+                            new { name = "Dark", theme = "dx.dark.css", selected = false},
+                            new { name = "Dark moon", theme = "dx.darkmoon.css", selected = false},
+                            new { name = "Dark Violet", theme = "dx.darkviolet.css", selected = false},
+                            new { name = "Fluent blue dark", theme = "dx.fluent.blue.dark.css", selected = false},
+                            new { name = "Fluent blue light", theme = "dx.fluent.blue.light.css", selected = false},
+                            new { name = "Fluent saas light", theme = "dx.fluent.saas.light.css", selected = false},
+                            new { name = "Fluent saas dark", theme = "dx.fluent.saas.dark.css", selected = false},
+                            new { name = "Generic dark", theme = "dx.dark.css", selected = false},
+                            new { name = "Material blue light", theme = "dx.material.blue.light.compact.css", selected = false},
+                            new { name = "Material blue dark", theme = "dx.material.blue.dark.compact.css", selected = false},
+                            new { name = "Material lime light", theme = "dx.material.lime.light.compact.css", selected = false},
+                            new { name = "Material lime dark", theme = "dx.material.lime.dark.compact.css", selected = false},
+                            new { name = "Material orange light", theme = "dx.material.orange.light.compact.css", selected = false},
+                            new { name = "Material orange dark", theme = "dx.material.orange.dark.compact.css", selected = false},
+                            new { name = "Material purple light", theme = "dx.material.purple.light.compact.css", selected = false},
+                            new { name = "Material purple dark", theme = "dx.material.purple.dark.compact.css", selected = false},
+                            new { name = "Material teal light", theme = "dx.material.teal.light.compact.css", selected = false},
+                            new { name = "Material teal dark", theme = "dx.material.teal.dark.compact.css", selected = false},
+                            new { name = "Soft blue", theme = "dx.softblue.css", selected = false},
+                            new { name = "Diagram", theme = "dx-diagram.css", selected = false},
+                            new { name = "Gantt", theme = "dx-gantt.css", selected = false}
+                                            })
+                                .OnSelectionChanged("changeTheme")
+                                 .DeferRendering(true)
+                                )
                         </li>
                     </ul>
                 </div>
@@ -80,9 +126,23 @@
             &copy; 2024 - MVCDemoApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            // $("#apptheme option[value='Gateway 2']").prop('selected', true);
+
+            // you need to specify id of combo to set right combo, if more than one combo
+        });
+        function changeTheme(e) {
+            var selectedTheme = e.component.option("value");            
+            document.cookie = "currentTheme=" + selectedTheme + ";path=/";
+            // $("#apptheme option[value='" + selectedTheme + "']").prop('selected', true);
+            $("#apptheme").dxSelectBox("instance").option("value", selectedTheme);
+             window.location.reload();
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

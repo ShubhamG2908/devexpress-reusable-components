@@ -1,0 +1,56 @@
+﻿.form {
+    margin-left: 3px;
+}
+
+.label {
+    font-size: 22px;
+    padding-bottom: 24px;
+}
+
+#menu-details {
+    width: 400px;
+    height: 400px;
+    margin: 20px auto 0;
+}
+
+    #menu-details > img {
+        height: 300px;
+        width: 400px;
+    }
+
+    #menu-details > .name {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    #menu-details > .price {
+        text-align: center;
+        font-size: 24px;
+    }
+
+.dark #menu-details > div {
+    color: #f0f0f0;
+}
+/*
+.options {
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 260px;
+    top: 0;
+    background-color: rgba(191, 191, 191, 0.15);
+}
+
+.option {
+    margin-top: 10px;
+}
+
+.caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.hidden {
+    visibility: hidden;
+}*/

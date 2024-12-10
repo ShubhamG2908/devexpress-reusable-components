@@ -1,0 +1,127 @@
+﻿@model List<MenuItem>
+@{
+	ViewData["Title"] = "Reusable Menu Components";
+	var menuItemsJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+	var kk = menuItemsJson;
+}
+<style>
+	#container {
+		width: 250px;
+		height: 100%;
+	}	
+	#menu .dx-menu-item {
+		font-size: 14px;
+		padding: 10px;
+	}
+</style>
+
+@* <div class="nav-fill">
+    <partial name="_Menu" />
+</div> *@
+<div id="container">
+	<p>Menu</p>
+	<div id="menu">
+	</div>
+	<div class="options">
+		<div class="caption">Options</div>
+		<div class="option">
+			<div>Show First Submenu Mode</div>
+			@(Html.DevExtreme().SelectBox()
+						.DataSource(new JS("showSubmenuModes"))
+						.InputAttr("aria-label", "Submenu Mode")
+						.Value(new JS("showSubmenuModes[1]"))
+						.DisplayExpr("name")
+						.OnValueChanged("firstSubMenuMode_changed")
+						)
+		</div>
+		<div class="option">
+			<div>Orientation</div>
+			@(Html.DevExtreme().SelectBox()
+						.DataSource(new[] { "horizontal", "vertical" })
+						.InputAttr("aria-label", "Orientation")
+						.Value("horizontal")
+						.OnValueChanged("menuOrientation_changed")
+						)
+		</div>
+		<div class="option">
+			@(Html.DevExtreme().CheckBox()
+						.Value(false)
+						.Text("Hide Submenu on Mouse Leave")
+						.OnValueChanged("checkBoxValue_changed")
+						)
+		</div>
+	</div>
+</div>
+<hr />
+@* <div class="solid-border">
+	@(Html.DevExtreme().Menu()
+		.ID("menuDev")
+		.DataSource(d => d.Mvc().Controller("Components").LoadAction("GetMenus").Key("Id"))
+		.Items(items =>
+		{
+			foreach (var menuItem in Model.ToList()) // yourMenuItemsList is of type List<ModelsProject.MenuItem>
+			{
+				items.Add().Text(menuItem.Text) // Assuming your `ModelsProject.MenuItem` has a `Text` property
+				.Icon(new JS(menuItem.Icon)) // Assuming your `ModelsProject.MenuItem` has an `Icon` property
+				.Url(menuItem.Url); // Assuming your `ModelsProject.MenuItem` has a `Url` property
+			}
+		})
+	.Orientation(Orientation.Horizontal)
+	.Height(250)
+	.Width(100)
+	)
+</div> *@
+<script>
+	var showSubmenuModes = [{
+		name: "onHover",
+		delay: { show: 0, hide: 500 }
+	}, {
+		name: "onClick",
+		delay: { show: 0, hide: 300 }
+	}];
+
+
+	function firstSubMenuMode_changed(data) {
+		getMenuInstance().option("showFirstSubmenuMode", data.value);
+	}
+
+	function menuOrientation_changed(data) {
+		getMenuInstance().option("orientation", data.value);
+	}
+
+	function checkBoxValue_changed(data) {
+		getMenuInstance().option("hideSubmenuOnMouseLeave", data.value);
+	}
+	$(function () {
+		const menuItems = @Html.Raw(menuItemsJson); // Insert serialized JSON into the script
+		console.log(menuItems);
+		const menu = $("#menu").dxMenu({
+			items: menuItems,
+			orientation: "horizontal", // or "vertical"
+			submenuDirection:"auto",
+			showFirstSubmenuMode: showSubmenuModes,
+			hideSubmenuOnMouseLeave: false,
+			hoverStateEnabled: true,
+			height:"50%",
+			width:"100%",
+			onItemRendered: function (e) {
+				// alert(e.itemData.Icon)
+				if (e.itemData.Icon) {
+					// const $icon = $("<i>").addClass(e.itemData.Icon); // Create an icon element
+					// e.itemElement.prepend($icon); // Prepend to the menu item
+					e.itemElement.append("<i class=\"" + e.itemData.Icon + "\"> " + e.itemData.Text + " </i> ");
+					e.itemElement.append(" ");
+				}
+			},
+			onItemClick: function (e) {
+				if (e.itemData.Url) {
+					// window.location.href = e.itemData.Url; // Navigate to the item's URL
+				}
+			}
+		}).dxMenu('instance');
+	});
+	function getMenuInstance() {
+		return $("#menu").dxMenu("instance");
+	}
+</script>
+
