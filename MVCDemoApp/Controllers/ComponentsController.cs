@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace MVCDemoApp.Controllers
 {
@@ -60,7 +61,7 @@ namespace MVCDemoApp.Controllers
 
         #region Partial View DataGrid call
 
-        private List<Schools> GetSchoolListFromCache()
+        private List<Schools> GetSchoolListFromCache(string searchQuery = "")
         {
             List<Schools> schools;
 
@@ -72,18 +73,25 @@ namespace MVCDemoApp.Controllers
 
             schools = SchoolData.SchoolsList;
 
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                schools = schools
+                    .Where(p => p.Name.Contains(searchQuery))
+                .ToList();
+            }
+
             _memoryCache.Set("schools", schools, new MemoryCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1000)
             });
 
             return schools;
         }
 
         [HttpGet]
-        public IActionResult GetSchools(DataSourceLoadOptions loadOptions)
+        public IActionResult GetSchools(DataSourceLoadOptions loadOptions,string searchQuery="")
         {
-            var result = DataSourceLoader.Load(GetSchoolListFromCache(), loadOptions);
+            var result = DataSourceLoader.Load(GetSchoolListFromCache(searchQuery), loadOptions);
             return Ok(result);
         }
 
@@ -113,6 +121,25 @@ namespace MVCDemoApp.Controllers
 		{
 			return DataSourceLoader.Load(MenuData.CustomMenus, loadOptions);
 		}
+
+		#region Custom DataGrid
+
+		// Provides data to the grid with server-side processing
+		public object GetSchoolDataWithSearchText(string searchQuery = "")
+		{
+			var schools = SchoolData.SchoolsList;
+
+			if (!string.IsNullOrEmpty(searchQuery))
+			{
+				schools = schools
+					.Where(p => p.Name.Contains(searchQuery))
+                .ToList();
+			}
+            
+            return Ok(schools);
+		}
+
+		#endregion
 
 		#endregion
 	}

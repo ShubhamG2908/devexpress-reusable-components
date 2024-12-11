@@ -48,16 +48,16 @@ namespace UtilitiesProject
 		/// <param name="controllerName"></param>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "",string action = "Get",object parameters = null)
+		internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "",string action = "Get",object controllerParameters = null)
 		{
 			//this will use while calling from controller methods and key.
-			if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key) && parameters != null) //must have controller, key and parameters
+			if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller, key and parameters
             {
-                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(parameters).Key(key));
+                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters).Key(key));
             }
-			else if (!string.IsNullOrWhiteSpace(controllerName) && string.IsNullOrWhiteSpace(key) && parameters != null) //must have controller and parameters
+			else if (!string.IsNullOrWhiteSpace(controllerName) && string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller and parameters
             {
-                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(parameters));
+                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters));
             }
             else if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key)) //must have controller ands key
             {
@@ -69,12 +69,12 @@ namespace UtilitiesProject
 			//default configuration. If need any changes then pass param and call it whenever use.
 			grid.FocusedRowEnabled(true);
 			grid.FocusedRowIndex(0);
-			grid.GroupPanel(g => g.Visible(true));
-			grid.SearchPanel(s => s.Visible(true));
+			grid.GroupPanel(g => g.Visible(false));
+			grid.SearchPanel(IPSDataGridDefaultSearchPanelConfig);
 			grid.ColumnAutoWidth(true);
 			grid.ElementAttr(new { @class = "dx-card wide-card" });
 			grid.ShowBorders(false);
-			grid.FilterRow(f => f.Visible(true));
+			grid.FilterRow(f => f.Visible(false));
 			grid.ColumnHidingEnabled(true);
 			if (listColumns != null && listColumns.Count > 0) { grid.Columns(columns => { IPSDataGridConfigureColumns<T>(columns, listColumns); }); }
 			grid.Pager(IPSDataGridDefaultPagerConfig);
@@ -126,8 +126,21 @@ namespace UtilitiesProject
 		/// </summary>
 		internal static Action<DataGridPagerBuilder> IPSDataGridDefaultPagerConfig = (builder) => {
 			builder.ShowPageSizeSelector(true);
-			builder.AllowedPageSizes(new[] { 5, 10, 20 });
-			builder.ShowInfo(true);
+			builder.AllowedPageSizes(new[] {5, 10, 20});
+			//builder.AllowedPageSizes(new JS("[ 5, 10, 20, 'all' ]"));
+			builder.ShowInfo(false);
+			builder.DisplayMode(GridPagerDisplayMode.Compact);
+            builder.ShowPageSizeSelector(true);
+
+        };
+
+		internal static Action<DataGridSearchPanelBuilder> IPSDataGridDefaultSearchPanelConfig = (builder) =>  {
+			builder.SearchVisibleColumnsOnly(false);
+			builder.Visible(false);
+			builder.HighlightCaseSensitive(true);
+			builder.HighlightSearchText(true);
+			builder.Width("250");				
+			builder.Placeholder("Search specific..");
 		};
 
 		/// <summary>
