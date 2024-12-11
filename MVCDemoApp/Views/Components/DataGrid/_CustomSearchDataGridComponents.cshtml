@@ -1,0 +1,48 @@
+﻿@model List<Schools>
+
+@{
+
+    var searchScoolList = new List<GridColumnSettings>();
+    searchScoolList.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+    searchScoolList.Add(new GridColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
+    searchScoolList.Add(new GridColumnSettings() { Caption = "RegisterDate", DataType = GridColumnDataType.Date, Field = "RegisterDate", Format = Format.MonthAndYear });
+    searchScoolList.Add(new GridColumnSettings() { Caption = "City", DataType = GridColumnDataType.String, Field = "City" });
+    searchScoolList.Add(new GridColumnSettings() { Caption = "Country", DataType = GridColumnDataType.String, Field = "Country" });
+
+    var searchPara = new
+    {
+        searchQuery = new JS("function() { return $('#searchInput').val(); }")
+    };
+}
+<h1>Custom Search</h1>
+
+<!-- Search Panel -->
+<div>
+    
+    <input type="text" id="searchInput" placeholder="Search..." />
+    <button id="searchButton">Search</button>
+    <button id="clearButton">Clear</button>
+</div>
+
+
+<!-- Grid -->
+@(Html.IPSDataGrid<Schools>(Model, null, searchScoolList, "Components", "Id", "GetSchools", searchPara,"customSearchDataGridId"))
+
+
+
+<script>
+    $(function () {
+        $('#searchButton').on('click', function () {
+            getDataGridInstance().refresh();            
+        });
+        $('#clearButton').on('click', function () {
+            $('#searchInput').text('');
+            $('#searchInput').val('');
+            getDataGridInstance().refresh();
+        });
+    });
+
+    function getDataGridInstance() {
+        return $("#customSearchDataGridId").dxDataGrid("instance");
+    }
+</script>
