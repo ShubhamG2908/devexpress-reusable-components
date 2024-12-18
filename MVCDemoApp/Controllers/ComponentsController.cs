@@ -5,15 +5,19 @@ using Microsoft.Extensions.Caching.Memory;
 using ModelsProject;
 using MVCDemoApp.Data;
 using MVCDemoApp.Models;
+using MVCDemoApp.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MVCDemoApp.Controllers
 {
-	public class ComponentsController : Controller
-	{
+    public class ComponentsController : Controller
+    {
         private readonly IMemoryCache _memoryCache;
 
         public ComponentsController(IMemoryCache memoryCache)
@@ -21,9 +25,9 @@ namespace MVCDemoApp.Controllers
             _memoryCache = memoryCache;
         }
         public IActionResult Index()
-		{
-			return View();
-		}
+        {
+            return View();
+        }
 
         #region Components
 
@@ -51,40 +55,127 @@ namespace MVCDemoApp.Controllers
             var model = MenuData.CustomMenus;
             return View(model);
         }
+
+        public IActionResult TreeView()
+        {
+            return View();
+        }
+
         #endregion
 
         public IActionResult ButtonComponents()
-		{
-			return PartialView("Button/_ButtonComponents.cshtml");
-		}
+        {
+            return PartialView("Button/_ButtonComponents.cshtml");
+        }
 
         #region Partial View DataGrid call
 
-        private List<Schools> GetSchoolListFromCache()
+        private List<Schools> GetSchoolListFromCache(DataSourceLoadOptions loadOptions)
         {
-            List<Schools> schools;
 
-            if (_memoryCache.TryGetValue("schools", out schools))
+            //if (_memoryCache.TryGetValue("schools", out schools))
+            //{
+            //    return schools;
+            //}
+
+            var schools = SchoolData.SchoolsList.AsQueryable();
+            // Apply filters using a helper function
+            if (loadOptions.Filter != null)
             {
-                return schools;
+                schools = ReflectionHelper.ApplyFilter<Schools>(schools, loadOptions.Filter);
             }
-
-
-            schools = SchoolData.SchoolsList;
 
             _memoryCache.Set("schools", schools, new MemoryCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1000)
             });
 
-            return schools;
+            return schools.ToList();
+        }
+
+        private List<object> GetClassroomListFromCache(DataSourceLoadOptions loadOptions)
+        {
+
+            var classrooms = ClassroomData.ClassroomsList.AsQueryable();
+            // Apply filters using a helper function
+            if (loadOptions.Filter != null)
+            {
+                classrooms = ReflectionHelper.ApplyFilter<Classrooms>(classrooms, loadOptions.Filter);
+            }
+
+            var treeData = ClassroomData.ClassroomsList
+                                    .GroupBy(c => c.SchoolId)
+                                    .Select(schoolGroup => new
+                                    {
+                                        Id = schoolGroup.Key,
+                                        Name = $"School {schoolGroup.Key}",
+                                        Items = schoolGroup.Select(classroom => new
+                                        {
+                                            Id = classroom.Id,
+                                            Name = $"Class room - {classroom.Name} (Teacher- {classroom.TeacherId})",
+                                            Items = classroom.MatchedTeachers.Select(teacher => new
+                                            {
+                                                Id = teacher.Id,
+                                                Name = $"{teacher.FirstName} {teacher.LastName}",
+                                            }).ToList(),
+                                            Capacity = classroom.Capacity,
+                                            SchoolId = classroom.SchoolId,
+                                            Description = classroom.Description,
+                                            TeacherId = classroom.TeacherId,
+                                        }).ToList()
+                                    }).ToList();
+
+            _memoryCache.Set("classRooms", classrooms, new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1000)
+            });
+
+            return treeData.ToList<object>();
         }
 
         [HttpGet]
-        public IActionResult GetSchools(DataSourceLoadOptions loadOptions)
+        public IActionResult GetSchools(DataSourceLoadOptions loadOptions, string searchQuery = "", string filterText = "")
         {
-            var result = DataSourceLoader.Load(GetSchoolListFromCache(), loadOptions);
+            var result = DataSourceLoader.Load(GetSchoolListFromCache(loadOptions), loadOptions);
             return Ok(result);
+        }
+        [HttpGet]
+        public IActionResult GetClassrooms(DataSourceLoadOptions loadOptions)
+        {
+            var result = DataSourceLoader.Load(GetClassroomListFromCache(loadOptions), loadOptions);
+            return Ok(result);
+        }
+
+        public IActionResult GetClassroomsWithJson(DataSourceLoadOptions loadOptions)
+        {
+            var treeData = ClassroomData.ClassroomsList
+                            .GroupBy(c => c.SchoolId)
+                            .Select(schoolGroup => new
+                            {
+                                Id = schoolGroup.Key,
+                                Name = $"School {schoolGroup.Key}",
+                                Items = schoolGroup.Select(classroom => new
+                                {
+                                    Id = classroom.Id,
+                                    Name = classroom.Name,
+                                    Items = classroom.MatchedTeachers.Select(teacher => new
+                                    {
+                                        Id = teacher.Id,
+                                        Name = string.Format($"{0} {1}", teacher.FirstName, teacher.LastName),
+                                    }).ToList(),
+                                    Capacity = classroom.Capacity,
+                                    SchoolId = classroom.SchoolId,
+                                    Description = classroom.Description,
+                                    TeacherId = classroom.TeacherId,
+                                }).ToList()
+                            }).ToList();
+            return Json(treeData);
+        }
+
+        [HttpGet]
+        public object GetPlainData(DataSourceLoadOptions loadOptions)
+        {
+            return DataSourceLoader.Load(TreeViewPlainData.Products, loadOptions);
         }
 
         [HttpGet]
@@ -100,20 +191,53 @@ namespace MVCDemoApp.Controllers
             var teachers = TeacherData.TeachersList.Where(w => w.ClassroomId == classRoomId).ToList();
             return DataSourceLoader.Load(teachers, options);
         }
-		[HttpGet]
-		public object GetTabPanelList(DataSourceLoadOptions options)
+        [HttpGet]
+        public object GetTabPanelList(DataSourceLoadOptions options)
         {
             var tabPanelItems = TabPanelData.TabPanelItems.ToList();
             return DataSourceLoader.Load(tabPanelItems, options);
         }
 
 
-		[HttpGet]
-		public object GetMenus(DataSourceLoadOptions loadOptions)
-		{
-			return DataSourceLoader.Load(MenuData.CustomMenus, loadOptions);
-		}
+        [HttpGet]
+        public object GetMenus(DataSourceLoadOptions loadOptions)
+        {
+            return DataSourceLoader.Load(MenuData.CustomMenus, loadOptions);
+        }
 
-		#endregion
-	}
+        #region Custom DataGrid
+
+        // Provides data to the grid with server-side processing
+        public object GetSchoolDataWithSearchText(string searchQuery = "")
+        {
+            var schools = SchoolData.SchoolsList;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                schools = schools
+                    .Where(p => p.Name.Contains(searchQuery))
+                .ToList();
+            }
+
+            return Ok(schools);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Binding methods or fucntions
+
+        public List<string> GetSchoolColumnNames()
+        {
+
+            var data = typeof(Schools).GetModelColName();
+            var cols = ReflectionHelper.GetModelColumns(typeof(Schools));
+            return ReflectionHelper.BindDropDownBoxOnlyColumnNameForDynamicModel(SchoolData.SchoolsList);
+        }
+
+        #endregion
+
+
+    }
 }

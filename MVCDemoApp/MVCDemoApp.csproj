@@ -17,4 +17,10 @@
 	  <ProjectReference Include="..\ModelsProject\ModelsProject.csproj" />
 	  <ProjectReference Include="..\UtilitiesProject\UtilitiesProject.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="Views\Components\DataGrid\_CustomSearchDataGridComponents.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
 </Project>
