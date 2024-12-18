@@ -10,107 +10,106 @@ using ModelsProject;
 
 namespace UtilitiesProject
 {
-	//Extend html components for generic builders or contents (e.g., a strongly-typed DataGrid)
-	internal static class HtmlHelpers
-	{
-		#region Button html
+    //Extend html components for generic builders or contents (e.g., a strongly-typed DataGrid)
+    internal static class HtmlHelpers
+    {
+        #region Button html
 
-		/// <summary>
-		/// Html rendering with specific html and return with ButtonBuilder of Devexpress. 
-		/// </summary>
-		/// <param name="Html"></param>
-		/// <param name="buttonText"></param>
-		/// <returns></returns>
-		internal static ButtonBuilder IPSButton(this IHtmlHelper html, string buttonText, string buttonId)
-		{
-			ButtonBuilder btn = html.DevExtreme().Button().ID(buttonId).Text(buttonText).Type(ButtonType.Success);
-			return btn;
-		}
-
-		#endregion
-
-		#region Datagrid html
-		/// <summary>
-		/// Html rendering with specific html and return with datagridbuilder
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="grid"></param>
-		/// <param name="model"></param>
-		/// <param name="datasourceCollection"></param>
-		/// <param name="listColumns"></param>
-		/// <param name="controllerName"></param>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "", string action = "Get", object parameters = null,string controlId ="dataGridId")
-		{
-			DataGridBuilder<T> dgb = grid.DevExtreme().DataGrid<T>()
-				.ID(controlId)
-				.DataSource(datasourceCollection)
-				.IPSDataGridSetDefaults(datasourceCollection, listColumns, controllerName, key,action,parameters);
-			return dgb;
-		}
-		#endregion
-
-		#region Date Box with model pass
-
-		/// <summary>
-		/// Date with model pass
-		/// </summary>
-		/// <typeparam name="TModel"></typeparam>
-		/// <typeparam name="TProperty"></typeparam>
-		/// <param name="htmlHelper"></param>
-		/// <param name="expression"></param>
-		/// <param name="ApplyValueMode"></param>
-		/// <returns></returns>
-		internal static IHtmlContent IPSDateBoxFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, EditorApplyValueMode ApplyValueMode)
-		{
-			var res = htmlHelper.DevExtreme().DateBoxFor(expression).ApplyValueMode(ApplyValueMode).ToString();
-			return new HtmlString(res);
-		}
-
-		#endregion
-
-		#region Date without model pass
-		
-		/// <summary>
-		/// Date without model pass
-		/// </summary>
-		/// <typeparam name="TModel"></typeparam>
-		/// <param name="htmlHelper"></param>
-		/// <param name="applyValueMode"></param>
-		/// <returns></returns>
-		internal static IHtmlContent IPSDateBox<TModel>(this IHtmlHelper<TModel> htmlHelper, EditorApplyValueMode applyValueMode)
-		{
-			var res = htmlHelper.DevExtreme().DateBox().ApplyValueMode(applyValueMode).ToString();
-			return new HtmlString(res);
-		}
-
-		#endregion
-
-		#region Synchronized date boxes
-
-		/// <summary>                   
-		/// Synchronized Date Boxes
-		/// </summary>
-		/// <param name="html"></param>
-		/// <returns></returns>
-		internal static IHtmlContent SynchronizedDateBoxes(this IHtmlHelper html)
-		{
-			string startDateBox = html.DevExtreme().DateBox().ID("startDate")
-				.Value(DateTime.Now)
-				.OnValueChanged("function(e){  var endDate= $('#endDate').dxDateBox('instance'); endDate.option('min', e.value);}")
-				.ToString();
-			string endDateBox = html.DevExtreme().DateBox().ID("endDate")
-				 .Value(DateTime.Now)
-
-				 .OnValueChanged("function(e){  var startDate= $('#startDate').dxDateBox('instance'); endDate.option('max', e.value);}")
-				.ToString();
-			string res = startDateBox + endDateBox;
-			return new HtmlString(res);
-		}
+        /// <summary>
+        /// Html rendering with specific html and return with ButtonBuilder of Devexpress. 
+        /// </summary>
+        /// <param name="Html"></param>
+        /// <param name="buttonText"></param>
+        /// <returns></returns>
+        internal static ButtonBuilder IPSButton(this IHtmlHelper html, string buttonText, string buttonId)
+        {
+            ButtonBuilder btn = html.DevExtreme().Button().ID(buttonId).Text(buttonText).Type(ButtonType.Success);
+            return btn;
+        }
 
         #endregion
 
+        #region Datagrid html
+        /// <summary>
+        /// Html rendering with specific html and return with datagridbuilder
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="grid"></param>
+        /// <param name="model"></param>
+        /// <param name="datasourceCollection"></param>
+        /// <param name="listColumns"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "", string action = "Get", object parameters = null, string controlId = "dataGridId")
+        {
+            DataGridBuilder<T> dgb = grid.DevExtreme().DataGrid<T>()
+                .ID(controlId)
+                .DataSource(datasourceCollection)
+                .IPSDataGridSetDefaults(datasourceCollection, listColumns, controllerName, key, action, parameters);
+            return dgb;
+        }
+        #endregion
+
+        #region Date Box with model pass
+
+        /// <summary>
+        /// Date with model pass
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="htmlHelper"></param>
+        /// <param name="expression"></param>
+        /// <param name="ApplyValueMode"></param>
+        /// <returns></returns>
+        internal static IHtmlContent IPSDateBoxFor<TModel, TProperty>(this IHtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, EditorApplyValueMode ApplyValueMode)
+        {
+            var res = htmlHelper.DevExtreme().DateBoxFor(expression).ApplyValueMode(ApplyValueMode).ToString();
+            return new HtmlString(res);
+        }
+
+        #endregion
+
+        #region Date without model pass
+
+        /// <summary>
+        /// Date without model pass
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="htmlHelper"></param>
+        /// <param name="applyValueMode"></param>
+        /// <returns></returns>
+        internal static IHtmlContent IPSDateBox<TModel>(this IHtmlHelper<TModel> htmlHelper, EditorApplyValueMode applyValueMode)
+        {
+            var res = htmlHelper.DevExtreme().DateBox().ApplyValueMode(applyValueMode).ToString();
+            return new HtmlString(res);
+        }
+
+        #endregion
+
+        #region Synchronized date boxes
+
+        /// <summary>                   
+        /// Synchronized Date Boxes
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        internal static IHtmlContent SynchronizedDateBoxes(this IHtmlHelper html)
+        {
+            string startDateBox = html.DevExtreme().DateBox().ID("startDate")
+                .Value(DateTime.Now)
+                .OnValueChanged("function(e){  var endDate= $('#endDate').dxDateBox('instance'); endDate.option('min', e.value);}")
+                .ToString();
+            string endDateBox = html.DevExtreme().DateBox().ID("endDate")
+                 .Value(DateTime.Now)
+
+                 .OnValueChanged("function(e){  var startDate= $('#startDate').dxDateBox('instance'); endDate.option('max', e.value);}")
+                .ToString();
+            string res = startDateBox + endDateBox;
+            return new HtmlString(res);
+        }
+
+        #endregion
 
         #region TabPanel component html
         /// <summary>
@@ -127,12 +126,21 @@ namespace UtilitiesProject
         /// <returns></returns>
         internal static TabPanelBuilder IPSTabPanel(this IHtmlHelper html, string controlId = "tbPanelId", string accessKey = "", List<TabPanelItemsSettings> tabPanelItemsSettings = null, string controllerName = "", string key = "", string action = "Get", object parameters = null,
             Position position = Position.Left, TabsStyle tabsStyle = TabsStyle.Primary, TabsIconPosition tabsIconPosition = TabsIconPosition.Start)
-		{
-            TabPanelBuilder tbPanel = html.DevExtreme().TabPanel().IPSSetTabPanelSetDefaults(controlId, accessKey, tabPanelItemsSettings,controllerName,key,action,parameters);
-			return tbPanel;
-		}
+        {
+            TabPanelBuilder tbPanel = html.DevExtreme().TabPanel().IPSSetTabPanelSetDefaults(controlId, accessKey, tabPanelItemsSettings, controllerName, key, action, parameters);
+            return tbPanel;
+        }
 
         #endregion
 
+        #region TreeView component html
+        internal static TreeViewBuilder IPSTreeView<T>(this IHtmlHelper html, string dataStructure, string keyExpr, string displayExpr, string expandedExpr, string parentIdExpr = "",string itemsExpr= "", List<T> datasourceCollection = null, string controllerName = "", string key = "", string action = "Get", object controllerParameters = null)
+        {
+            TreeViewBuilder tvb = html.DevExtreme().TreeView()
+                                    .IPSTreeViewSetDefaults<T>(dataStructure, keyExpr, displayExpr, expandedExpr, parentIdExpr, itemsExpr, datasourceCollection, controllerName, key, action, controllerParameters);
+            return tvb;
+        }
+
+        #endregion
     }
 }

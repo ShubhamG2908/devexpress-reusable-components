@@ -55,6 +55,12 @@ namespace MVCDemoApp.Controllers
             var model = MenuData.CustomMenus;
             return View(model);
         }
+
+        public IActionResult TreeView()
+        {
+            return View();
+        }
+
         #endregion
 
         public IActionResult ButtonComponents()
@@ -87,11 +93,89 @@ namespace MVCDemoApp.Controllers
             return schools.ToList();
         }
 
+        private List<object> GetClassroomListFromCache(DataSourceLoadOptions loadOptions)
+        {
+
+            var classrooms = ClassroomData.ClassroomsList.AsQueryable();
+            // Apply filters using a helper function
+            if (loadOptions.Filter != null)
+            {
+                classrooms = ReflectionHelper.ApplyFilter<Classrooms>(classrooms, loadOptions.Filter);
+            }
+
+            var treeData = ClassroomData.ClassroomsList
+                                    .GroupBy(c => c.SchoolId)
+                                    .Select(schoolGroup => new
+                                    {
+                                        Id = schoolGroup.Key,
+                                        Name = $"School {schoolGroup.Key}",
+                                        Items = schoolGroup.Select(classroom => new
+                                        {
+                                            Id = classroom.Id,
+                                            Name = $"Class room - {classroom.Name} (Teacher- {classroom.TeacherId})",
+                                            Items = classroom.MatchedTeachers.Select(teacher => new
+                                            {
+                                                Id = teacher.Id,
+                                                Name = $"{teacher.FirstName} {teacher.LastName}",
+                                            }).ToList(),
+                                            Capacity = classroom.Capacity,
+                                            SchoolId = classroom.SchoolId,
+                                            Description = classroom.Description,
+                                            TeacherId = classroom.TeacherId,
+                                        }).ToList()
+                                    }).ToList();
+
+            _memoryCache.Set("classRooms", classrooms, new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1000)
+            });
+
+            return treeData.ToList<object>();
+        }
+
         [HttpGet]
         public IActionResult GetSchools(DataSourceLoadOptions loadOptions, string searchQuery = "", string filterText = "")
         {
             var result = DataSourceLoader.Load(GetSchoolListFromCache(loadOptions), loadOptions);
             return Ok(result);
+        }
+        [HttpGet]
+        public IActionResult GetClassrooms(DataSourceLoadOptions loadOptions)
+        {
+            var result = DataSourceLoader.Load(GetClassroomListFromCache(loadOptions), loadOptions);
+            return Ok(result);
+        }
+
+        public IActionResult GetClassroomsWithJson(DataSourceLoadOptions loadOptions)
+        {
+            var treeData = ClassroomData.ClassroomsList
+                            .GroupBy(c => c.SchoolId)
+                            .Select(schoolGroup => new
+                            {
+                                Id = schoolGroup.Key,
+                                Name = $"School {schoolGroup.Key}",
+                                Items = schoolGroup.Select(classroom => new
+                                {
+                                    Id = classroom.Id,
+                                    Name = classroom.Name,
+                                    Items = classroom.MatchedTeachers.Select(teacher => new
+                                    {
+                                        Id = teacher.Id,
+                                        Name = string.Format($"{0} {1}", teacher.FirstName, teacher.LastName),
+                                    }).ToList(),
+                                    Capacity = classroom.Capacity,
+                                    SchoolId = classroom.SchoolId,
+                                    Description = classroom.Description,
+                                    TeacherId = classroom.TeacherId,
+                                }).ToList()
+                            }).ToList();
+            return Json(treeData);
+        }
+
+        [HttpGet]
+        public object GetPlainData(DataSourceLoadOptions loadOptions)
+        {
+            return DataSourceLoader.Load(TreeViewPlainData.Products, loadOptions);
         }
 
         [HttpGet]
