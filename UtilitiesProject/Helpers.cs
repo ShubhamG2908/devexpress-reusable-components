@@ -68,7 +68,7 @@ namespace UtilitiesProject
                     if (filterList[propertyNamePosition].GetType().Name == typeof(string).Name)
                     {
                         //single filter
-                        query = SingleLogic(query, filterList, propertyNamePosition, operationPosition, filterPosition).AsQueryable();
+                        query = PrepareFilterQuery(query, filterList, propertyNamePosition, operationPosition, filterPosition);
                     }
                     else if (filterList[propertyNamePosition].GetType().Name == typeof(JArray).Name)
                     {
@@ -79,32 +79,26 @@ namespace UtilitiesProject
                             if (item.GetType().Name == typeof(string).Name)
                             {
                                 //single filter with and/or/strings
-                                query = SingleLogic(query, filterList, propertyNamePosition, operationPosition, filterPosition, (row == operationPosition)).AsQueryable();
+                                query = PrepareFilterQuery(query, filterList, propertyNamePosition, operationPosition, filterPosition, (row == operationPosition));
                             }
                             else if (item.GetType().Name == typeof(JArray).Name)
                             {
                                 if (item is JArray jArray)
                                 {
                                     List<object> itemlists = jArray.ToObject<List<object>>();
-                                    query = SingleLogic(query, itemlists, propertyNamePosition, operationPosition, filterPosition).AsQueryable();
+                                    query = PrepareFilterQuery(query, itemlists, propertyNamePosition, operationPosition, filterPosition);
 
                                 }
                             }
                             row++;
                         }
                     }
-                    //}
                     result = query;
                 }
-
-
                 result = query;
-
-
             }
             catch (Exception ex)
             {
-
                 return query;
             }
             // If no filters apply, return the full list
@@ -123,7 +117,7 @@ namespace UtilitiesProject
         /// <param name="oprationKeyWord"></param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        internal static IQueryable<T> SingleLogic<T>(IQueryable<T> query, IList<object> filterList, int propertyNamePosition, int operationPosition, int filterPosition, bool oprationKeyWord = false)
+        internal static IQueryable<T> PrepareFilterQuery<T>(IQueryable<T> query, IList<object> filterList, int propertyNamePosition, int operationPosition, int filterPosition, bool oprationKeyWord = false)
         {
             IQueryable<T> returnList = query;
             //single
@@ -182,7 +176,7 @@ namespace UtilitiesProject
                 {
                     "and" => leftFilter.Intersect(rightFilter),
                     "or" => leftFilter.Concat(rightFilter),
-                    _ => query.AsQueryable()
+                    _ => query
                 };
                 //return result;
                 returnList = query;
