@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using DevExtreme.AspNet.Mvc.Factories;
 using ModelsProject;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
 [assembly: InternalsVisibleTo("MVCDemoApp")]
 
 namespace UtilitiesProject
@@ -67,14 +68,17 @@ namespace UtilitiesProject
             if (datasourceCollection != null && datasourceCollection.Count > 0) { grid.DataSource(datasourceCollection); }
 
 			//default configuration. If need any changes then pass param and call it whenever use.
+			grid.RemoteOperations(true);
 			grid.FocusedRowEnabled(true);
-			grid.FocusedRowIndex(0);
-			grid.GroupPanel(g => g.Visible(false));
+			grid.FocusedRowIndex(0);			
+			grid.GroupPanel(g => g.Visible(true));
 			grid.SearchPanel(IPSDataGridDefaultSearchPanelConfig);
 			grid.ColumnAutoWidth(true);
 			grid.ElementAttr(new { @class = "dx-card wide-card" });
 			grid.ShowBorders(false);
-			grid.FilterRow(f => f.Visible(false));
+			grid.HeaderFilter(h => h.Visible(true));
+            grid.FilterSyncEnabled(true);
+			grid.FilterRow(f => f.Visible(true));
 			grid.ColumnHidingEnabled(true);
 			if (listColumns != null && listColumns.Count > 0) { grid.Columns(columns => { IPSDataGridConfigureColumns<T>(columns, listColumns); }); }
 			grid.Pager(IPSDataGridDefaultPagerConfig);
@@ -135,8 +139,8 @@ namespace UtilitiesProject
         };
 
 		internal static Action<DataGridSearchPanelBuilder> IPSDataGridDefaultSearchPanelConfig = (builder) =>  {
-			builder.SearchVisibleColumnsOnly(false);
-			builder.Visible(false);
+			builder.SearchVisibleColumnsOnly(true);
+			builder.Visible(true);
 			builder.HighlightCaseSensitive(true);
 			builder.HighlightSearchText(true);
 			builder.Width("250");				
