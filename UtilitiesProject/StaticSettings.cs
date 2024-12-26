@@ -38,52 +38,105 @@ namespace UtilitiesProject
             return button;
         }
 
-        #endregion
+		#endregion
 
-        #region Datagrid component Settings
+		#region Datagrid component Settings
 
-        /// <summary>
-        /// Default setting set for Data grid
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="grid"></param>
-        /// <param name="datasourceCollection"></param>
-        /// <param name="listColumns"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "", string action = "Get", object controllerParameters = null)
+		/// <summary>
+		/// Default setting set for Data grid
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="grid"></param>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		internal static DataGridBuilder<T> IPSDataGridSetDefaults<T>(this DataGridBuilder<T> grid, DataGridBuilderOptions<T> options)
         {
-            //this will use while calling from controller methods and key.
-            if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller, key and parameters
+            grid.ID(options.ControlId);
+			//this will use while calling from controller methods and key.
+			if (!string.IsNullOrWhiteSpace(options.ControllerName) 
+                && !string.IsNullOrWhiteSpace(options.Key) 
+                && options.Parameters != null) //must have controller, key and parameters
             {
-                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters).Key(key));
+                grid.DataSource(d => d.Mvc().Controller(options.ControllerName)
+                                            .LoadAction(options.Action)
+                                            .LoadParams(options.Parameters)
+                                            .Key(options.Key));
             }
-            else if (!string.IsNullOrWhiteSpace(controllerName) && string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller and parameters
-            {
-                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters));
+            else if (!string.IsNullOrWhiteSpace(options.ControllerName) 
+                    && !string.IsNullOrWhiteSpace(options.Key) 
+                    && !string.IsNullOrWhiteSpace(options.InsertAction)) //must have controller, key, insertaction
+			{
+                grid.DataSource(d => d.Mvc().Controller(options.ControllerName).LoadAction(options.Action).InsertAction(options.InsertAction).Key(options.Key));
             }
-            else if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key)) //must have controller ands key
+			else if (!string.IsNullOrWhiteSpace(options.ControllerName) 
+                    && !string.IsNullOrWhiteSpace(options.Key) 
+                    && !string.IsNullOrWhiteSpace(options.InsertAction)
+					&& !string.IsNullOrWhiteSpace(options.UpdateAction)
+					) //must have controller, key, insertaction, updateaction
+			{
+				grid.DataSource(d => d.Mvc().Controller(options.ControllerName)
+                                            .LoadAction(options.Action)
+                                            .InsertAction(options.InsertAction)
+                                            .UpdateAction(options.UpdateAction));
+			}
+			else if (!string.IsNullOrWhiteSpace(options.ControllerName) && !string.IsNullOrWhiteSpace(options.Key)
+					&& !string.IsNullOrWhiteSpace(options.InsertAction)
+					&& !string.IsNullOrWhiteSpace(options.UpdateAction)
+					&& !string.IsNullOrWhiteSpace(options.DeleteAction)
+					) //must have controller, key, insertaction, updateaction, deleteaction
+			{
+				grid.DataSource(d => d.Mvc().Controller(options.ControllerName)
+                                            .LoadAction(options.Action)
+                                            .InsertAction(options.InsertAction)
+                                            .UpdateAction(options.UpdateAction)
+                                            .DeleteAction(options.DeleteAction));
+			}
+			else if (!string.IsNullOrWhiteSpace(options.ControllerName) && !string.IsNullOrWhiteSpace(options.Key)
+					&& !string.IsNullOrWhiteSpace(options.InsertAction)
+					&& !string.IsNullOrWhiteSpace(options.UpdateAction)
+					&& !string.IsNullOrWhiteSpace(options.DeleteAction)
+					&& !string.IsNullOrWhiteSpace(options.OnBeforeSend)
+					) //must have controller, key, options.InsertAction, updateaction, deleteaction, onbeforesend (javascript)
+			{
+				grid.DataSource(d => d.Mvc().Controller(options.ControllerName)
+											.LoadAction(options.Action)
+											.InsertAction(options.InsertAction)
+											.UpdateAction(options.UpdateAction)
+											.DeleteAction(options.DeleteAction)
+                                            .OnBeforeSend(options.OnBeforeSend));
+			}
+			else if (!string.IsNullOrWhiteSpace(options.ControllerName) 
+                    && string.IsNullOrWhiteSpace(options.Key) 
+                    && options.Parameters != null) //must have controller and parameters
+			{
+				grid.DataSource(d => d.Mvc().Controller(options.ControllerName)
+                                            .LoadAction(options.Action)
+                                            .LoadParams(options.Parameters));
+			}
+			else if (!string.IsNullOrWhiteSpace(options.ControllerName) && !string.IsNullOrWhiteSpace(options.Key)) //must have controller ands key
             {
-                grid.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).Key(key));
+                grid.DataSource(d => d.Mvc().Controller(options.ControllerName).LoadAction(options.Action).Key(options.Key));
             }
             //this will use while calling from list of collection that time passed that directly to datasource.
-            if (datasourceCollection != null && datasourceCollection.Count > 0) { grid.DataSource(datasourceCollection); }
+            if (options.DataSourceCollection != null && options.DataSourceCollection.Count > 0) { grid.DataSource(options.DataSourceCollection); }
 
             //default configuration. If need any changes then pass param and call it whenever use.
             grid.RemoteOperations(true);
             grid.FocusedRowEnabled(true);
             grid.FocusedRowIndex(0);
             grid.GroupPanel(g => g.Visible(true));
-            grid.SearchPanel(IPSDataGridDefaultSearchPanelConfig);
+            if (options.AllowSearchable == true){ grid.SearchPanel(IPSDataGridDefaultSearchPanelConfig); }
             grid.ColumnAutoWidth(true);
             grid.ElementAttr(new { @class = "dx-card wide-card" });
             grid.ShowBorders(false);
-            grid.HeaderFilter(h => h.Visible(true));
-            grid.FilterSyncEnabled(true);
-            grid.FilterRow(f => f.Visible(true));
+            if (options.AllowFilter == true)
+            {
+                grid.HeaderFilter(h => h.Visible(true));
+                grid.FilterSyncEnabled(true);
+                grid.FilterRow(f => f.Visible(true));
+            }
             grid.ColumnHidingEnabled(true);
-            if (listColumns != null && listColumns.Count > 0) { grid.Columns(columns => { IPSDataGridConfigureColumns<T>(columns, listColumns); }); }
+            if (options.ListColumns != null && options.ListColumns.Count > 0) { grid.Columns(columns => { IPSDataGridConfigureColumns<T>(columns, options.ListColumns); }); }
             grid.Pager(IPSDataGridDefaultPagerConfig);
             return grid;
         }

@@ -1,4 +1,5 @@
-﻿using MVCDemoApp.Data;
+﻿using Dapper;
+using MVCDemoApp.Data;
 using System.Reflection;
 using UtilitiesProject;
 
@@ -29,12 +30,17 @@ namespace MVCDemoApp.Utilities
         {
             return Helpers.ApplyFilter<T>(query, filter);
         }
-        /// <summary>
-        /// Get model columns
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static List<string> GetModelColumns(Type model)
+
+		internal static string ApplyFilter<T>(string baseQuery, object filter)
+		{
+			return Helpers.ApplyFilter<T>(baseQuery, filter);
+		}
+		/// <summary>
+		/// Get model columns
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		public static List<string> GetModelColumns(Type model)
         {
 
             // Get all public properties of the model

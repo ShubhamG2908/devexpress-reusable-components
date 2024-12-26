@@ -76,6 +76,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Components" asp-action="Index">Components</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MenuItem" asp-action="Index">Menu MVC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Menu" asp-action="Index">Menu Devexpress</a>
+                        </li>
+                        <li class="nav-item">
                             @(Html.DevExtreme().SelectBox()
                                 .ID("apptheme")
                                 .ValueExpr("theme")
