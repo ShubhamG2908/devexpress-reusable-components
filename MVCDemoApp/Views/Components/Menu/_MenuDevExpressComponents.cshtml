@@ -1,0 +1,52 @@
+﻿@using ModelsProject
+
+<hr />
+
+@(Html.DevExtreme().DataGrid<MenuItem>()
+	.DataSource(d => d.WebApi()
+					.Controller("MenuItem")
+					.LoadAction("Get")
+					.InsertAction("Post")
+					.UpdateAction("Put")
+					.DeleteAction("DeleteRow")
+					.Key("Id")
+					.OnBeforeSend("beforeSend")
+			)
+	.Columns(columns =>
+	{
+
+		columns.AddFor(m => m.Id).AllowEditing(false);
+
+		columns.AddFor(m => m.Text);
+
+		columns.AddFor(m => m.Icon);
+
+		columns.AddFor(m => m.Url);
+
+		columns.AddFor(m => m.Disabled);
+	})
+	.ShowBorders(true)
+	.RepaintChangesOnly(true)
+	@* .Scrolling(s => s.Mode(GridScrollingMode.Virtual)) *@
+	.Editing(e => e
+		.Mode(GridEditMode.Cell)
+		.RefreshMode(GridEditRefreshMode.Reshape)
+		.AllowAdding(true)
+		.AllowDeleting(true)
+		.AllowUpdating(true)
+	)
+)
+<script>
+	function beforeSend(operation, ajaxSettings) {
+		var data = ajaxSettings.data || {},
+			args = Object.keys(data).map(function (key) {
+				return key + "=" + data[key];
+			}).join(" ");
+
+		var logList = $("#requests ul"),
+			time = DevExpress.localization.formatDate(new Date(), "HH:mm:ss"),
+			newItem = $("<li>").text([time, ajaxSettings.method, ajaxSettings.url, args].join(" "));
+
+		logList.prepend(newItem);
+	}
+</script>

@@ -1,0 +1,37 @@
+﻿
+@{
+
+
+}
+@model List<object>
+
+@(Html.IPSTreeView<object>("Plain", "ID", "Text", "Expanded", "CategoryId","", null, "Components", "", "GetPlainData")
+    .OnItemClick("treeViewItemClick")
+	)
+    <hr />
+@(Html.IPSTreeView<object>("Tree", "ID", "Name", "true", "TeacherId","Items", null, "Components", "", "GetClassrooms")
+    .OnItemClick("treeViewItemClick")
+    )
+<hr />
+@(Html.DevExtreme().TreeView()
+    .ID("simple-treeview")
+    .DataSource(d => d.Mvc().Controller("Components").LoadAction("GetPlainData"))
+    @* .DataSourceOptions(o => o.Map("mapData")) *@
+    .DataStructure(TreeViewDataStructure.Plain)
+    .ParentIdExpr("CategoryId")
+    .KeyExpr("ID")
+    .DisplayExpr("Text")
+    .ExpandedExpr("Expanded")
+    .ExpandNodesRecursive(false)
+    .Width(300)
+    .OnItemClick("treeViewItemClick")
+)
+
+<script>
+    function treeViewItemClick(e) {
+        var itemData = e.itemData;
+        console.log("Selected Item:", itemData);
+    }
+</script>
+
+

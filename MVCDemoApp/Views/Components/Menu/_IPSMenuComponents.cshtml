@@ -1,0 +1,52 @@
+﻿@model List<MenuItem>
+
+@{
+	var menuItemList = new List<GridColumnSettings>();
+	menuItemList.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
+	menuItemList.Add(new GridColumnSettings() { Caption = "Text", DataType = GridColumnDataType.String, Field = "Text" });
+	menuItemList.Add(new GridColumnSettings() { Caption = "Icon", DataType = GridColumnDataType.String, Field = "Icon" });
+	menuItemList.Add(new GridColumnSettings() { Caption = "Url", DataType = GridColumnDataType.String, Field = "Url" });
+	menuItemList.Add(new GridColumnSettings() { Caption = "Disabled", DataType = GridColumnDataType.Boolean, Field = "Disabled" });
+
+	var options = new DataGridBuilderOptions<MenuItem>
+	{
+				ControlId = "ipsDataGridWithDapper",
+				ControllerName = "MenuItem",
+				Key ="Id",
+				Action ="Get",
+				ListColumns = menuItemList,
+				Parameters = null,
+				InsertAction="Post",
+				UpdateAction ="Put",
+				DeleteAction="DeleteRow",
+				OnBeforeSend = "beforeSend",
+				AllowFilter = true
+	};
+}
+
+@(Html.IPSDataGrid<MenuItem>(Model,options)	
+	.ShowBorders(true)
+	.RepaintChangesOnly(true)
+	@* .Scrolling(s => s.Mode(GridScrollingMode.Virtual)) *@
+	.Editing(e => e
+		.Mode(GridEditMode.Cell)
+		.RefreshMode(GridEditRefreshMode.Reshape)
+		.AllowAdding(true)
+		.AllowDeleting(true)
+		.AllowUpdating(true)
+	)
+)
+<script>
+	function beforeSend(operation, ajaxSettings) {
+		var data = ajaxSettings.data || {},
+			args = Object.keys(data).map(function (key) {
+				return key + "=" + data[key];
+			}).join(" ");
+
+		var logList = $("#requests ul"),
+			time = DevExpress.localization.formatDate(new Date(), "HH:mm:ss"),
+			newItem = $("<li>").text([time, ajaxSettings.method, ajaxSettings.url, args].join(" "));
+
+		logList.prepend(newItem);
+	}
+</script>

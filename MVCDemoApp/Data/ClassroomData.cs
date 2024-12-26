@@ -8,10 +8,12 @@ namespace MVCDemoApp.Data
             new Classrooms {
                 Id = 1,
                 TeacherId = 1,
-                SchoolId = 10248,                
+                SchoolId = 10248,
                 Name = "1A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description= "Class {1A}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
+             
             },
             new Classrooms {
                 Id = 2,
@@ -19,7 +21,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "1A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 3,
@@ -27,7 +30,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "2A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 4,
@@ -35,7 +39,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "2A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 5,
@@ -43,7 +48,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "1A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 6,
@@ -51,7 +57,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "1A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 7,
@@ -59,7 +66,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "3A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 8,
@@ -67,7 +75,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "3A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 9,
@@ -75,7 +84,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "3A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 10,
@@ -83,7 +93,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "3A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 11,
@@ -91,7 +102,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "4A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 12,
@@ -99,7 +111,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "4A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 13,
@@ -107,7 +120,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "5A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 14,
@@ -115,7 +129,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "5A",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 15,
@@ -123,7 +138,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "1B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 16,
@@ -131,7 +147,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "1B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 17,
@@ -139,7 +156,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "1B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 18,
@@ -147,7 +165,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "1B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 19,
@@ -155,7 +174,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "2B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             },
             new Classrooms {
                 Id = 20,
@@ -163,7 +183,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10248,
                 Name = "2B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 2).ToList(),
             },
             new Classrooms {
                 Id = 21,
@@ -171,7 +192,8 @@ namespace MVCDemoApp.Data
                 SchoolId = 10249,
                 Name = "2B",
                 Capacity= 20,
-                Description="Class {Name}"
+                Description="Class {Name}",
+                MatchedTeachers = TeacherData.TeachersList.Where(w => w.ClassroomId == 1).ToList(),
             }
         };
     }

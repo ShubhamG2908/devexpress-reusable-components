@@ -8,13 +8,35 @@
 
   <ItemGroup>
     <Content Remove="Views\Components\CustomMenu.cshtml" />
+    <Content Remove="Views\Components\Menu\_MenuDevExpressComponents.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Controllers\API\ORMDataModel1.xpo" />
+    <None Remove="Controllers\API\ORMDataModel1.xpo.diagram" />
   </ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="DevExpress.Xpo" Version="23.2.6" />
 		<PackageReference Include="DevExtreme.AspNet.Data" Version="3.0.0" />
 		<PackageReference Include="DevExtreme.AspNet.Core" Version="23.2.6" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\ModelsProject\ModelsProject.csproj" />
 	  <ProjectReference Include="..\UtilitiesProject\UtilitiesProject.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="Views\Components\DataGrid\_CustomSearchDataGridComponents.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
 	</ItemGroup>
 </Project>

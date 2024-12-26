@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ModelsProject.MenuItem>
+
+@{
+    ViewData["Title"] = "MVC Menu List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Menu List with CRUD Operation</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-default btn-sm"><i class="fa fa-cog"></i> Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Icon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Icon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "fas fa-edit" }) |
+                    @Html.ActionLink("", "Details", new { id = item.Id }, new { @class = "fa fa-info-circle" }) |
+                    @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "fas fa-trash" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

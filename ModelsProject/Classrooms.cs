@@ -14,6 +14,7 @@ namespace ModelsProject
         public string Name { get; set; }
         public string Description { get; set; }
         public int Capacity { get; set; }
+        public List<Teachers> MatchedTeachers { get; set; }
 
     }
 }

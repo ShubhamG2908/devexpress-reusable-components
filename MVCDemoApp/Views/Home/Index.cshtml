@@ -2,6 +2,7 @@
 @model List<Schools>
 @{
 	ViewData["Title"] = "Reusable Components Dashboard";
+
 }
 @*
 <div class="text-center">
@@ -17,7 +18,7 @@
 	<p>Custom Grid</p>
 	@(Html.DevExtreme().DataGrid()
 		.DataSource(Model)
-		.IPSDataGridSetDefaults()
+		@* .IPSDataGridSetDefaults(ipsoptionsDefult) *@
 		.Pager(StaticSettings.IPSDataGridDefaultPagerConfig)
 		)
 	<p>Normal Grid</p>
