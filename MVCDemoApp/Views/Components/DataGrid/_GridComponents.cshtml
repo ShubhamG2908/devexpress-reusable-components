@@ -6,10 +6,19 @@
     list.Add(new GridColumnSettings() { Caption = "Id", DataType = GridColumnDataType.Number, Field = "Id", Format = Format.FixedPoint });
     list.Add(new GridColumnSettings() { Caption = "Name", DataType = GridColumnDataType.String, Field = "Name" });
     list.Add(new GridColumnSettings() { Caption = "RegisterDate", DataType = GridColumnDataType.Date, Field = "RegisterDate", Format = Format.MonthAndYear });
+	var options = new DataGridBuilderOptions<Schools>
+			{
+				ControlId = "ipsDataGrid",
+				ControllerName = "Home",
+				Key = "Id",
+				ListColumns = list,
+				DataSourceCollection = SchoolData.SchoolsList
+				
+			};
 }
 <h2 class="content-block">Default Settings defined by extending the DevExtreme configuration builders</h2>
 
 <h3 class="content-block">Default Settings in DevExtreme components</h3>
 
 @model List<Schools>
-@(Html.IPSDataGrid<Schools>(Model, SchoolData.SchoolsList, list, "Home", "Id"))
+@(Html.IPSDataGrid<Schools>(Model, options))

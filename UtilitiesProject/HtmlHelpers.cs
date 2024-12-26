@@ -27,26 +27,20 @@ namespace UtilitiesProject
             return btn;
         }
 
-        #endregion
+		#endregion
 
-        #region Datagrid html
-        /// <summary>
-        /// Html rendering with specific html and return with datagridbuilder
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="grid"></param>
-        /// <param name="model"></param>
-        /// <param name="datasourceCollection"></param>
-        /// <param name="listColumns"></param>
-        /// <param name="controllerName"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, List<T> datasourceCollection = null, List<GridColumnSettings> listColumns = null, string controllerName = "", string key = "", string action = "Get", object parameters = null, string controlId = "dataGridId")
+		#region Datagrid html
+		/// <summary>
+		/// Html rendering with specific html and return with datagridbuilder
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="grid"></param>
+		/// <param name="model"></param>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		internal static DataGridBuilder<T> IPSDataGrid<T>(this IHtmlHelper grid, object model, DataGridBuilderOptions<T> options)
         {
-            DataGridBuilder<T> dgb = grid.DevExtreme().DataGrid<T>()
-                .ID(controlId)
-                .DataSource(datasourceCollection)
-                .IPSDataGridSetDefaults(datasourceCollection, listColumns, controllerName, key, action, parameters);
+            DataGridBuilder<T> dgb = grid.DevExtreme().DataGrid<T>().IPSDataGridSetDefaults(options);
             return dgb;
         }
         #endregion

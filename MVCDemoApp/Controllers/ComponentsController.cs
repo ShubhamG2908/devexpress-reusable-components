@@ -61,9 +61,14 @@ namespace MVCDemoApp.Controllers
             return View();
         }
 
-        #endregion
+		public IActionResult Menu()
+		{
+			return View();
+		}
 
-        public IActionResult ButtonComponents()
+		#endregion
+
+		public IActionResult ButtonComponents()
         {
             return PartialView("Button/_ButtonComponents.cshtml");
         }

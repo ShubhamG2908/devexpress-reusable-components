@@ -13,6 +13,17 @@
     {
         searchQuery = new JS("function() { return $('#searchInput').val(); }")
     };
+
+    var ipsoptions = new DataGridBuilderOptions<Schools>
+            {
+                ControlId = "customSearchDataGridId",
+                ControllerName = "Components",
+                Key = "Id",
+                Action = "GetSchools",
+                ListColumns = searchScoolList,
+                Parameters = searchPara
+
+            };
 }
 <h1>Custom Search</h1>
 
@@ -26,7 +37,7 @@
 
 
 <!-- Grid -->
-@(Html.IPSDataGrid<Schools>(Model, null, searchScoolList, "Components", "Id", "GetSchools", searchPara,"customSearchDataGridId"))
+@(Html.IPSDataGrid<Schools>(Model, ipsoptions))
 
 
 
