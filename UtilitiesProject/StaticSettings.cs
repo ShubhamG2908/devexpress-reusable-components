@@ -366,46 +366,50 @@ namespace UtilitiesProject
 
         #region TreeView component settings
 
-        internal static TreeViewBuilder IPSTreeViewSetDefaults<T>(this TreeViewBuilder treeView, string dataStructure, string keyExpr, string displayExpr, string expandedExpr,string parentIdExp = "",string itemsExpr = "", List<T> datasourceCollection = null, string controllerName = "", string key = "", string action = "Get", object controllerParameters = null)
+        internal static TreeViewBuilder IPSTreeViewSetDefaults<T>(this TreeViewBuilder treeView, TreeViewBuilderOptions<T> treeViewBuilderOptions)
 		{
             treeView.ID(string.Format(@"treeView{0}", Guid.NewGuid().ToString()));
 
 			//this will use while calling from list of collection that time passed that directly to datasource.
-			if (datasourceCollection != null && datasourceCollection.Count > 0) { treeView.DataSource(datasourceCollection); }
+			if (treeViewBuilderOptions.DataSourceCollection != null && treeViewBuilderOptions.DataSourceCollection.Count > 0) { treeView.DataSource(treeViewBuilderOptions.DataSourceCollection); }
 			//this will use while calling from controller methods and key.
-			if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller, key and parameters
+			if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ControllerName) && !string.IsNullOrWhiteSpace(treeViewBuilderOptions.Key) && treeViewBuilderOptions.ControllerParameters != null) //must have controller, key and parameters
 			{
-				treeView.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters).Key(key));
+				treeView.DataSource(d => d.Mvc().Controller(treeViewBuilderOptions.ControllerName).LoadAction(treeViewBuilderOptions.Action).LoadParams(treeViewBuilderOptions.ControllerParameters).Key(treeViewBuilderOptions.Key));
 			}
-			else if (!string.IsNullOrWhiteSpace(controllerName) && string.IsNullOrWhiteSpace(key) && controllerParameters != null) //must have controller and parameters
+			else if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ControllerName) && string.IsNullOrWhiteSpace(treeViewBuilderOptions.Key) && treeViewBuilderOptions.ControllerParameters != null) //must have controller and parameters
 			{
-				treeView.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).LoadParams(controllerParameters));
+				treeView.DataSource(d => d.Mvc().Controller(treeViewBuilderOptions.ControllerName).LoadAction(treeViewBuilderOptions.Action).LoadParams(treeViewBuilderOptions.ControllerParameters));
 			}
-			else if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(key)) //must have controller ands key
+			else if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ControllerName) && !string.IsNullOrWhiteSpace(treeViewBuilderOptions.Key)) //must have controller ands key
 			{
-				treeView.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action).Key(key));
+				treeView.DataSource(d => d.Mvc().Controller(treeViewBuilderOptions.ControllerName).LoadAction(treeViewBuilderOptions.Action).Key(treeViewBuilderOptions.Key));
 			}
-            else if (!string.IsNullOrWhiteSpace(controllerName) && !string.IsNullOrWhiteSpace(action)) //must have controller ands key
+            else if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ControllerName) && string.IsNullOrWhiteSpace(treeViewBuilderOptions.Key)) //must have controller ands key
             {
-                treeView.DataSource(d => d.Mvc().Controller(controllerName).LoadAction(action));
+                treeView.DataSource(d => d.Mvc().Controller(treeViewBuilderOptions.ControllerName).LoadAction(treeViewBuilderOptions.Action));
             }
+			else if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ControllerName) && !string.IsNullOrWhiteSpace(treeViewBuilderOptions.Key)) //must have controller ands key
+			{
+				treeView.DataSource(d => d.Mvc().Controller(treeViewBuilderOptions.ControllerName).LoadAction(treeViewBuilderOptions.Action));
+			}
 
-            treeView.Width("100%");
+			treeView.Width("100%");
             treeView.Height("30%");
             treeView.ScrollDirection(ScrollDirection.Vertical);
-            if (!string.IsNullOrWhiteSpace(dataStructure))
+            if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.DataStructure))
             {
-                treeView.DataStructure((TreeViewDataStructure.Tree.ToString().ToUpper() == dataStructure.ToUpper()) ? TreeViewDataStructure.Tree : TreeViewDataStructure.Plain);
+                treeView.DataStructure((TreeViewDataStructure.Tree.ToString().ToUpper() == treeViewBuilderOptions.DataStructure.ToUpper()) ? TreeViewDataStructure.Tree : TreeViewDataStructure.Plain);
             }
             else
             {
                 treeView.DataStructure(TreeViewDataStructure.Plain);
             }
-            treeView.KeyExpr(keyExpr);
-            treeView.DisplayExpr(displayExpr);
-            treeView.ExpandedExpr(expandedExpr);
-            if (!string.IsNullOrWhiteSpace(parentIdExp)) { treeView.ParentIdExpr(parentIdExp); }
-            if (!string.IsNullOrWhiteSpace(itemsExpr)) { treeView.ItemsExpr(itemsExpr); }
+            treeView.KeyExpr(treeViewBuilderOptions.KeyExpr);
+            treeView.DisplayExpr(treeViewBuilderOptions.DisplayExpr);
+			if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ExpandedExpr)) { treeView.ExpandedExpr(treeViewBuilderOptions.ExpandedExpr); }
+			if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ParentIdExpr)) { treeView.ParentIdExpr(treeViewBuilderOptions.ParentIdExpr); }
+            if (!string.IsNullOrWhiteSpace(treeViewBuilderOptions.ItemsExpr)) { treeView.ItemsExpr(treeViewBuilderOptions.ItemsExpr); }
 
             return treeView;
         }

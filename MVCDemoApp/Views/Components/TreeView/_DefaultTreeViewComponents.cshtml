@@ -1,37 +1,57 @@
-﻿
-@{
-
+﻿@{
+	
+	var treeViewBuilderOptionsForClassroom = new TreeViewBuilderOptions<object>
+			{
+				DataStructure = TreeViewDataStructure.Plain.ToString(),
+				KeyExpr = "ID",
+				DisplayExpr = "Name",
+				// ExpandedExpr = "true",
+				ParentIdExpr = "TeacherId",
+				ControllerName = "Components",
+				Action = "GetClassrooms",
+				ItemsExpr = "Items",
+				Key ="ID"
+			};
 
 }
 @model List<object>
+@(Html.IPSTreeView<object>(treeViewBuilderOptionsForClassroom).ExpandNodesRecursive(true).OnItemClick("treeViewItemClick"))
+<hr />
+@{
+	var treeViewBuilderOptionsForProduct = new TreeViewBuilderOptions<Product>
+			{
+				DataStructure = TreeViewDataStructure.Plain.ToString(),
+				KeyExpr = "ID",
+				DisplayExpr = "Text",
+				ExpandedExpr = "Expanded",
+				ParentIdExpr = "CategoryId",
+				ControllerName = "Components",
+				Action = "GetPlainData",
+			};
 
-@(Html.IPSTreeView<object>("Plain", "ID", "Text", "Expanded", "CategoryId","", null, "Components", "", "GetPlainData")
-    .OnItemClick("treeViewItemClick")
-	)
-    <hr />
-@(Html.IPSTreeView<object>("Tree", "ID", "Name", "true", "TeacherId","Items", null, "Components", "", "GetClassrooms")
-    .OnItemClick("treeViewItemClick")
-    )
+}
+@(Html.IPSTreeView<Product>(treeViewBuilderOptionsForProduct).OnItemClick("treeViewItemClick"))
 <hr />
 @(Html.DevExtreme().TreeView()
-    .ID("simple-treeview")
-    .DataSource(d => d.Mvc().Controller("Components").LoadAction("GetPlainData"))
-    @* .DataSourceOptions(o => o.Map("mapData")) *@
-    .DataStructure(TreeViewDataStructure.Plain)
-    .ParentIdExpr("CategoryId")
-    .KeyExpr("ID")
-    .DisplayExpr("Text")
-    .ExpandedExpr("Expanded")
-    .ExpandNodesRecursive(false)
-    .Width(300)
-    .OnItemClick("treeViewItemClick")
+	.ID("simple-treeview")
+	.DataSource(d => d.Mvc().Controller("Components").LoadAction("GetPlainData"))
+	@* .DataSourceOptions(o => o.Map("mapData")) *@
+	.DataStructure(TreeViewDataStructure.Plain)
+	.ParentIdExpr("CategoryId")
+	.KeyExpr("ID")
+	.DisplayExpr("Text")
+	.ExpandedExpr("Expanded")
+	.ExpandNodesRecursive(false)
+	.Width(300)
+	.SearchEnabled(true)
+	.OnItemClick("treeViewItemClick")
 )
 
 <script>
-    function treeViewItemClick(e) {
-        var itemData = e.itemData;
-        console.log("Selected Item:", itemData);
-    }
+	function treeViewItemClick(e) {
+		var itemData = e.itemData;
+		console.log("Selected Item:", itemData);
+	}
 </script>
 
 

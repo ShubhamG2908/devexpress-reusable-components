@@ -128,10 +128,10 @@ namespace UtilitiesProject
         #endregion
 
         #region TreeView component html
-        internal static TreeViewBuilder IPSTreeView<T>(this IHtmlHelper html, string dataStructure, string keyExpr, string displayExpr, string expandedExpr, string parentIdExpr = "",string itemsExpr= "", List<T> datasourceCollection = null, string controllerName = "", string key = "", string action = "Get", object controllerParameters = null)
+        internal static TreeViewBuilder IPSTreeView<T>(this IHtmlHelper html, TreeViewBuilderOptions<T> treeViewBuilderOptions)
         {
             TreeViewBuilder tvb = html.DevExtreme().TreeView()
-                                    .IPSTreeViewSetDefaults<T>(dataStructure, keyExpr, displayExpr, expandedExpr, parentIdExpr, itemsExpr, datasourceCollection, controllerName, key, action, controllerParameters);
+                                    .IPSTreeViewSetDefaults<T>(treeViewBuilderOptions);
             return tvb;
         }
 

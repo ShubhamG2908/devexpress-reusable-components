@@ -114,15 +114,15 @@ namespace MVCDemoApp.Controllers
                                     {
                                         Id = schoolGroup.Key,
                                         Name = $"School {schoolGroup.Key}",
-                                        Items = schoolGroup.Select(classroom => new
+										Items = schoolGroup.Select(classroom => new
                                         {
                                             Id = classroom.Id,
                                             Name = $"Class room - {classroom.Name} (Teacher- {classroom.TeacherId})",
-                                            Items = classroom.MatchedTeachers.Select(teacher => new
+											Items = classroom.MatchedTeachers.Select(teacher => new
                                             {
                                                 Id = teacher.Id,
-                                                Name = $"{teacher.FirstName} {teacher.LastName}",
-                                            }).ToList(),
+                                                Name = $"{teacher.FirstName} {teacher.LastName}"
+											}).ToList(),
                                             Capacity = classroom.Capacity,
                                             SchoolId = classroom.SchoolId,
                                             Description = classroom.Description,
@@ -151,7 +151,14 @@ namespace MVCDemoApp.Controllers
             return Ok(result);
         }
 
-        public IActionResult GetClassroomsWithJson(DataSourceLoadOptions loadOptions)
+		[HttpGet]
+		public IActionResult GetClassroomsData(DataSourceLoadOptions loadOptions)
+		{
+			var result = DataSourceLoader.Load(ClassroomData.ClassroomsList, loadOptions);
+			return Ok(result);
+		}
+
+		public IActionResult GetClassroomsWithJson(DataSourceLoadOptions loadOptions)
         {
             var treeData = ClassroomData.ClassroomsList
                             .GroupBy(c => c.SchoolId)

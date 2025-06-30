@@ -1,0 +1,312 @@
+﻿@{
+	ViewData["Title"] = "DevExtreme Data Table with Custom Column Filtering";
+}
+<h1>@ViewData["Title"]</h1>
+<style>
+	/* Custom styling to ensure toolbar items align well */
+	.dx-datagrid-toolbar .dx-toolbar-after {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end; /* Align items to the right */
+		flex-grow: 1; /* Allow this section to take available space */
+	}
+
+	.dx-datagrid-toolbar .dx-toolbar-item {
+		display: flex;
+		align-items: center;
+		/* Add some spacing between toolbar items when aligned right */
+		margin-left: 10px;
+	}
+
+		.dx-datagrid-toolbar .dx-toolbar-item:first-child {
+			margin-left: 0; /* Remove margin for the first item in the group */
+		}
+	/* Adjust width of the dxTagBox in the toolbar to prevent overflow */
+	.dx-datagrid-toolbar .dx-tagbox {
+		max-width: 200px; /* Or a specific pixel width like 250px */
+		width: 100%; /* Ensure it's responsive within its max-width */
+	}
+</style>
+
+<div class="container">
+	<h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Employee Directory</h1>
+
+	<div id="gridContainer"></div>
+</div>
+
+<script>
+	// Sample Data
+		const employees = [
+			{ id: 1, firstName: 'John', lastName: 'Doe', position: 'Software Engineer', country: 'USA', city: 'New York', salary: 90000, hireDate: '2020-01-15' },
+			{ id: 2, firstName: 'Jane', lastName: 'Smith', position: 'Project Manager', country: 'Canada', city: 'Toronto', salary: 110000, hireDate: '2018-03-01' },
+			{ id: 3, firstName: 'Peter', lastName: 'Jones', position: 'UI/UX Designer', country: 'UK', city: 'London', salary: 85000, hireDate: '2021-07-20' },
+			{ id: 4, firstName: 'Anna', lastName: 'Brown', position: 'Data Scientist', country: 'USA', city: 'San Francisco', salary: 105000, hireDate: '2019-11-10' },
+			{ id: 5, firstName: 'Mike', lastName: 'Davis', position: 'QA Engineer', country: 'Germany', city: 'Berlin', salary: 75000, hireDate: '2022-02-28' },
+			{ id: 6, firstName: 'Sophia', lastName: 'Miller', position: 'Marketing Specialist', country: 'Canada', city: 'Vancouver', salary: 70000, hireDate: '2023-01-05' },
+			{ id: 7, firstName: 'David', lastName: 'Wilson', position: 'DevOps Engineer', country: 'USA', city: 'Seattle', salary: 95000, hireDate: '2020-09-12' },
+			{ id: 8, firstName: 'Emily', lastName: 'Moore', position: 'HR Manager', country: 'UK', city: 'Manchester', salary: 80000, hireDate: '2017-06-01' },
+			{ id: 9, firstName: 'Chris', lastName: 'Taylor', position: 'Product Owner', country: 'Australia', city: 'Sydney', salary: 120000, hireDate: '2016-04-18' },
+			{ id: 10, firstName: 'Olivia', lastName: 'Anderson', position: 'Business Analyst', country: 'USA', city: 'Chicago', salary: 88000, hireDate: '2021-03-25' },
+			{ id: 11, firstName: 'Daniel', lastName: 'Thomas', position: 'Software Engineer', country: 'Germany', city: 'Munich', salary: 92000, hireDate: '2022-08-01' },
+			{ id: 12, firstName: 'Mia', lastName: 'Jackson', position: 'Project Manager', country: 'USA', city: 'Boston', salary: 115000, hireDate: '2019-05-30' }
+		];
+
+
+		let countryFilterPopup;
+	let selectedCountries = [];
+
+			let globelDatasourcerendering;
+			// Columns to consider for global search
+			const searchableColumns = ['country'];
+			// const searchableColumns = ['firstName', 'lastName', 'position', 'country', 'city'];
+			const globalFilterDataSource = getAllUniqueSearchableValues(employees, searchableColumns);
+			const filterExpr = globalFilterDataSource.map(value => ["Country", "contains", value]);
+
+				// Join using OR
+				const finalFilter = filterExpr.reduce((acc, curr, index) => {
+					if (index === 0) return curr;
+					return [acc, "or", curr];
+				});
+
+			// Initialize the DevExtreme DataGrid
+			const dataGrid = $("#gridContainer").dxDataGrid({
+				dataSource: employees,
+				keyExpr: "id", // Unique identifier for rows
+				showBorders: true,
+				showRowLines: true,
+				rowAlternationEnabled: true,
+				hoverStateEnabled: true,
+				filterPanel: {
+					visible: true // Show the filter panel above the grid
+				},
+				filterRow: {
+					visible: true, // Show the filter row below column headers
+					applyFilter: "auto"
+				},
+				headerFilter: {
+					visible: false // Disable header filters for all columns, as we have a global one
+				},
+				searchPanel: {
+				visible: true, // Enable a global search panel
+				width: 240,
+				placeholder: "Search..."
+			},
+				// searchPanel visibility is now controlled via toolbar items
+				paging: {
+					pageSize: 10 // Number of rows per page
+				},
+				pager: {
+					showPageSizeSelector: true,
+					allowedPageSizes: [5, 10, 20],
+					showInfo: true
+				},
+				columns: [
+					{
+						dataField: "firstName",
+						caption: "First Name",
+						width: 150
+					},
+					{
+						dataField: "lastName",
+						caption: "Last Name",
+						width: 150
+					},
+					{
+						dataField: "position",
+						caption: "Position",
+						width: 200
+					},
+					{
+						dataField: "country",
+						caption: "Country",
+						width: 150,
+						// No headerFilter here, as we have a global one
+					},
+					{
+						dataField: "city",
+						caption: "City",
+						width: 150
+					},
+					{
+						dataField: "salary",
+						caption: "Salary",
+						dataType: "number",
+						format: "currency", // Format as currency
+						width: 120
+					},
+					{
+						dataField: "hireDate",
+						caption: "Hire Date",
+						dataType: "date",
+						format: "shortDate", // Format as a short date
+						width: 120
+					}
+				],
+				onCellPrepared: function (e) {
+					console.log("Preparing cell", e.rowType, e.column?.dataField, e.cellElement[0]);
+					if (e.rowType === "filter" && e.column.dataField === "country" && e.cellElement) {
+						const icon = document.createElement("span");
+						icon.className = "dx-icon dx-icon-filter";
+						icon.style.position = "absolute";
+						icon.style.right = "8px";
+						icon.style.top = "6px";
+						icon.style.cursor = "pointer";
+						icon.style.color = "#888";
+						icon.onclick = function () {
+							showCountryFilterPopup(e.component); // Pass DataGrid instance
+						};
+						e.cellElement[0].style.position = "relative";
+						e.cellElement[0].appendChild(icon);
+					}
+				},
+
+				toolbar: {
+					items: [
+						{
+							location: 'after', // Place our custom filter before the built-in search panel
+							// Give the TagBox element an ID so we can access it later to set dataSource
+							locateInMenu: 'auto', // Important for responsive behavior
+							// template: function(data, itemElement) {
+							// 	// Create a placeholder div that will be replaced by dxTagBox
+							// 	$('<div>').attr('id', 'toolbarGlobalTagFilter').appendTo(itemElement);
+							// },
+							widget: 'dxTagBox',
+							options: {
+								dataSource: globalFilterDataSource,
+								placeholder: "Filter by Keywords(Country)...",
+								showClearButton: true,
+								searchEnabled: true,
+								width: 200, // Adjust width as needed
+								// displayExpr: 'text', // Tell TagBox to display the 'text' property
+								// valueExpr: 'value',  // Tell TagBox to use the 'value' property for its internal value
+								onValueChanged: function (e) {
+							  const selectedValues = e.value; // e.g., ["USA", "UK"]
+								}
+							}
+						},
+						{
+							name: "searchPanel", // This is the built-in search panel
+							location: 'after' // Place it after our custom filter
+						},
+						"columnChooserButton", // Example of other built-in items
+						"groupPanel",
+						"exportButton"
+					]
+				}
+				}).dxDataGrid("instance");
+
+	function showCountryFilterPopup(dataGridInstance) {
+		if (!countryFilterPopup) {
+			countryFilterPopup = $("<div>").appendTo("body").dxPopup({
+				title: "Filter by Country",
+				width: 300,
+				height: "auto",
+				showCloseButton: true,
+				contentTemplate: function (contentElement) {
+					$("<div>").dxTagBox({
+						items: [...new Set(dataGridInstance.getDataSource().items().map(x => x.country))],
+						placeholder: "Select countries...",
+						value: selectedCountries,
+						onValueChanged: function (e) {
+							selectedCountries = e.value;
+
+
+						}
+					}).appendTo(contentElement);
+
+					$("<div>").dxButton({
+						text: "Apply Filter",
+						type: "default",
+						onClick: function () {
+							// Build filter for selected countries
+							let filter = null;
+							if (selectedCountries.length > 0) {
+
+
+								console.log("Applying filter for:", selectedCountries);
+								// console.log("Final Filter:", filter);
+								console.log("Globle filter - ",finalFilter);
+
+									selectedValues = selectedCountries; // e.g., ["USA", "UK"]
+							  let newFilter = [];
+
+							  if (selectedValues && selectedValues.length > 0) {
+								const individualTermFilters = [];
+
+								selectedValues.forEach(term => {
+								  const termConditions = [];
+
+								  searchableColumns.forEach(column => {
+									termConditions.push([column, "contains", term]); // ✅ Valid filter format
+								  });
+
+								  if (termConditions.length > 1) {
+									individualTermFilters.push(["or", ...termConditions]);
+								  } else if (termConditions.length === 1) {
+									individualTermFilters.push(termConditions[0]);
+								  }
+								});
+
+								if (individualTermFilters.length > 0) {
+									let indx = 0;
+
+										individualTermFilters.forEach((filter, index) => {
+											newFilter.push(filter);
+											if (index < individualTermFilters.length - 1) { // If it's not the last item
+												newFilter.push("or");
+											}
+										});
+								  // newFilter = ["and", ...individualTermFilters];
+								} else if (individualTermFilters.length === 1) {
+								  newFilter = individualTermFilters[0];
+								}
+							  }
+							  console.log("Selected filter - ",newFilter)
+							dataGridInstance.filter(newFilter);
+							countryFilterPopup.hide();
+						}
+						}
+					}).appendTo(contentElement).css("margin-top", "10px");
+				}
+			}).dxPopup("instance");
+		}
+
+		countryFilterPopup.show();
+	}
+
+
+
+	// Get all unique string values from relevant columns for the global filter
+				function getAllUniqueSearchableValues(data, columnsToSearch) {
+					// const uniqueEntriesMap = new Map(); // Map to store unique 'text' values to avoid duplicates
+					const uniqueValues = new Set(); // Use a Set to store unique values
+					console.log("Extracting unique values from columns:", columnsToSearch); // Debugging output
+					console.log("Data :", data); // Debugging output
+					data.forEach(item => {
+						console.log("Processing item:", item); // Debugging output
+						columnsToSearch.forEach(col => {
+							console.log(`Checking column: ${col} with value: ${item[col]}`); // Debugging output
+							const value = item[col];
+							console.log("Value:", value); // Debugging output
+							if (typeof value === 'string' && value.trim() !== '') {
+								 uniqueValues.add(value.trim());
+							// const columnCaption = dataGridInstance.columnOption(col, 'caption') || col; // Get column caption or use dataField
+							// 	const entryText = `${columnCaption}: ${value.trim()}`;
+							// 	const entryValue = value.trim(); // The actual value to filter by
+
+							// 	if (!uniqueEntriesMap.has(entryText)) {
+							// 		uniqueEntriesMap.set(entryText, { text: entryText, value: entryValue });
+							// 	}
+							}
+						});
+					});
+					// // Sort for better user experience
+					return Array.from(uniqueValues).sort();
+					// Convert map values to array and sort by text for better user experience
+					// return Array.from(uniqueEntriesMap.values()).sort((a, b) => a.text.localeCompare(b.text));
+				}
+
+
+
+
+</script>

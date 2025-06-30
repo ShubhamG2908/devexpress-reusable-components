@@ -1,0 +1,238 @@
+﻿@{
+	ViewData["Title"] = "DevExtreme Data Table with Custom Column Filtering";
+}
+<h1>@ViewData["Title"]</h1>
+@* <script src="https://cdn.tailwindcss.com"></script> *@
+@* <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            overflow: hidden; /* Ensures rounded corners are applied */
+        }
+
+        .dx-datagrid {
+            border-radius: 8px; /* Apply rounded corners to the DataGrid */
+            overflow: hidden;
+        }
+        /* Custom styling for DevExtreme components if needed, beyond Tailwind */
+        .dx-header-filter-menu .dx-list-item-content {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    </style> *@
+<div class="container">
+	<h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Employee Directory</h1>
+	<div>
+		<div id="filterContainer">
+			<div id="countryFilter"></div>
+			<div id="positionFilter"></div>
+			<div id="cityFilter"></div>
+		</div>
+	</div>
+	<div class="right-side">
+		<div id="selectStatus"></div>
+	</div>
+	<div id="gridContainer"></div>
+</div>
+
+<script>
+	// Sample Data
+		const employees = [
+			{ id: 1, firstName: 'John', lastName: 'Doe', position: 'Software Engineer', country: 'USA', city: 'New York', salary: 90000, hireDate: '2020-01-15' },
+			{ id: 2, firstName: 'Jane', lastName: 'Smith', position: 'Project Manager', country: 'Canada', city: 'Toronto', salary: 110000, hireDate: '2018-03-01' },
+			{ id: 3, firstName: 'Peter', lastName: 'Jones', position: 'UI/UX Designer', country: 'UK', city: 'London', salary: 85000, hireDate: '2021-07-20' },
+			{ id: 4, firstName: 'Anna', lastName: 'Brown', position: 'Data Scientist', country: 'USA', city: 'San Francisco', salary: 105000, hireDate: '2019-11-10' },
+			{ id: 5, firstName: 'Mike', lastName: 'Davis', position: 'QA Engineer', country: 'Germany', city: 'Berlin', salary: 75000, hireDate: '2022-02-28' },
+			{ id: 6, firstName: 'Sophia', lastName: 'Miller', position: 'Marketing Specialist', country: 'Canada', city: 'Vancouver', salary: 70000, hireDate: '2023-01-05' },
+			{ id: 7, firstName: 'David', lastName: 'Wilson', position: 'DevOps Engineer', country: 'USA', city: 'Seattle', salary: 95000, hireDate: '2020-09-12' },
+			{ id: 8, firstName: 'Emily', lastName: 'Moore', position: 'HR Manager', country: 'UK', city: 'Manchester', salary: 80000, hireDate: '2017-06-01' },
+			{ id: 9, firstName: 'Chris', lastName: 'Taylor', position: 'Product Owner', country: 'Australia', city: 'Sydney', salary: 120000, hireDate: '2016-04-18' },
+			{ id: 10, firstName: 'Olivia', lastName: 'Anderson', position: 'Business Analyst', country: 'USA', city: 'Chicago', salary: 88000, hireDate: '2021-03-25' },
+			{ id: 11, firstName: 'Daniel', lastName: 'Thomas', position: 'Software Engineer', country: 'Germany', city: 'Munich', salary: 92000, hireDate: '2022-08-01' },
+			{ id: 12, firstName: 'Mia', lastName: 'Jackson', position: 'Project Manager', country: 'USA', city: 'Boston', salary: 115000, hireDate: '2019-05-30' }
+		];
+		const  distinctCountries = employees.map(emp => emp.country)
+														   .filter((value, index, self) => self.indexOf(value) === index)
+														   .sort();
+		// const distinctCountries = [...new Set(employees.map(emp => emp.country))].sort();
+	const distinctPositions = [...new Set(employees.map(emp => emp.position))].sort();
+	const distinctCities = [...new Set(employees.map(emp => emp.city))].sort();
+	// const countryFilterItems = ["ALL", ...distinctCountries];
+	let dataGrid;
+
+		let selectedCountries = [];
+	let selectedPositions = [];
+	let selectedCities = [];
+
+
+	$(function() {
+
+
+		// Initialize the DevExtreme DataGrid
+	dataGrid =$("#gridContainer").dxDataGrid({
+			dataSource: employees,
+			keyExpr: "id", // Unique identifier for rows
+			showBorders: true,
+			showRowLines: true,
+			rowAlternationEnabled: true,
+			hoverStateEnabled: true,
+			filterPanel: {
+				visible: false // Show the filter panel above the grid
+			},
+			filterRow: {
+				visible: false, // Show the filter row below column headers
+				applyFilter: "auto"
+			},
+			headerFilter: {
+				visible: true // Enable header filters for all columns by default
+			},
+			searchPanel: {
+				visible: true, // Enable a global search panel
+				width: 240,
+				placeholder: "Search..."
+			},
+			paging: {
+				pageSize: 10 // Number of rows per page
+			},
+			pager: {
+				showPageSizeSelector: true,
+				allowedPageSizes: [5, 10, 20],
+				showInfo: true
+			},
+			columns: [
+				{
+					dataField: "firstName",
+					caption: "First Name",
+					width: 150
+				},
+				{
+					dataField: "lastName",
+					caption: "Last Name",
+					width: 150,
+					headerFilter:{
+						visible:false
+					}
+				},
+				{
+					dataField: "position",
+					caption: "Position",
+					width: 200
+				},
+				{
+					dataField: "country",
+					caption: "Country",
+					width: 150,
+					// Custom header filter configuration for multi-select dropdown
+					headerFilter: {
+						visible: false,
+						allowSelectAll: true, // Enable multi-select functionality
+						dataSource: function(options) {
+							// Get distinct country values from the data source
+							const distinctCountries = employees.map(emp => emp.country)
+															   .filter((value, index, self) => self.indexOf(value) === index)
+															   .sort(); // Sort them alphabetically
+															   // console.log(distinctCountries)
+							// Format the distinct values for the header filter
+							const filterItems = distinctCountries.map(country => ({
+								text: country,
+								value: country // Value to filter by
+							}));
+						// console.log(filterItems[0].text);
+						// console.log(filterItems[0].value);
+						   // //options.dataSource.loadMode = 'raw'; // Crucial for client-side distinct values
+							options.dataSource.load(filterItems);
+						}
+					}
+				},
+				{
+					dataField: "city",
+					caption: "City",
+					width: 150
+				},
+				{
+					dataField: "salary",
+					caption: "Salary",
+					dataType: "number",
+					format: "currency", // Format as currency
+					width: 120
+				},
+				{
+					dataField: "hireDate",
+					caption: "Hire Date",
+					dataType: "date",
+					format: "shortDate", // Format as a short date
+					width: 120
+				}
+			]
+		}).dxDataGrid("instance");
+
+	 $('#countryFilter').dxTagBox({
+			  items: distinctCountries,
+			placeholder: "Filter by country...",
+			showSelectionControls: true,
+			applyValueMode: "useButtons",
+			multiline: false,
+			onValueChanged: function (e) {
+
+				selectedCountries = e.value;
+				applyFilters();
+
+
+				// if (selected.length > 0) {
+				// 	// Custom function filter
+				// 	dataGrid.filter(function (itemData) {
+				// 		return selected.includes(itemData.country);
+				// 	});
+				// } else {
+				// 	dataGrid.clearFilter();
+				// }
+			}
+			});
+
+				$('#positionFilter').dxTagBox({
+		items: distinctPositions,
+		placeholder: "Filter by Position...",
+		showSelectionControls: true,
+		applyValueMode: "useButtons",
+		onValueChanged: function (e) {
+			selectedPositions = e.value;
+			applyFilters();
+		}
+	});
+
+	$('#cityFilter').dxTagBox({
+		items: distinctCities,
+		placeholder: "Filter by City...",
+		showSelectionControls: true,
+		applyValueMode: "useButtons",
+		onValueChanged: function (e) {
+			selectedCities = e.value;
+			applyFilters();
+		}
+	});
+	});
+		function applyFilters() {
+		dataGrid.filter(function (item) {
+			const matchCountry = selectedCountries.length === 0 || selectedCountries.includes(item.country);
+			const matchPosition = selectedPositions.length === 0 || selectedPositions.includes(item.position);
+			const matchCity = selectedCities.length === 0 || selectedCities.includes(item.city);
+			return matchCountry && matchPosition && matchCity;
+		});
+	}
+
+</script>

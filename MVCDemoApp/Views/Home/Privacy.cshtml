@@ -1,6 +1,201 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+	ViewData["Title"] = "Privacy Policy";
 }
 <h1>@ViewData["Title"]</h1>
+<style>
+	.dx-htmleditor-content img {
+		vertical-align: middle;
+		padding-right: 10px;
+	}
 
+	.dx-htmleditor-content table {
+		width: 50%;
+	}
+
+	.options {
+		padding: 20px;
+		background-color: rgba(191, 191, 191, 0.15);
+		margin-top: 20px;
+	}
+
+	.caption {
+		font-size: 18px;
+		font-weight: 500;
+	}
+
+	.option {
+		margin-top: 10px;
+		display: inline-block;
+		margin-right: 40px;
+	}
+
+		.option > .dx-selectbox,
+		.option > .label {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.option > .label {
+			margin-right: 10px;
+		}
+
+</style>
 <p>Use this page to detail your site's privacy policy.</p>
+
+@functions {
+	object GetInputAttr(string key, string value)
+	{
+		return new { inputAttr = new Dictionary<string, string>() { { key, value } } };
+	}
+}
+
+@(Html.DevExtreme().HtmlEditor()
+	.ID("html-editor")
+	.Height(725)
+	.Value(new JS("markup"))
+	.Toolbar(toolbar => toolbar.Items(
+		items =>
+		{
+			items.Add().Name(HtmlEditorToolbarItem.Undo);
+
+			items.Add().Name(HtmlEditorToolbarItem.Redo);
+
+			items.Add().Name(HtmlEditorToolbarItem.Separator);
+
+			items.Add()
+				.Name("size")
+				.AcceptedValues(new[] { "8pt", "10pt", "12pt", "14pt", "18pt", "24pt", "36pt" })
+				.Option("options", GetInputAttr("aria-label", "Font size"));
+
+			items.Add()
+				.Name("font")
+				.AcceptedValues(new[] { "Arial", "Courier New", "Georgia", "Impact", "Lucida Console", "Tahoma", "Times New Roman", "Verdana" })
+				.Option("options", GetInputAttr("aria-label", "Font family"));
+
+
+			items.Add()
+				.Name("header")
+				.AcceptedValues(new JS("[false, 1, 2, 3, 4, 5]"))
+				.Option("options", GetInputAttr("aria-label", "Header"));
+			items.Add().Name(HtmlEditorToolbarItem.Separator);
+
+			items.Add().Name(HtmlEditorToolbarItem.Image);
+			items.Add().Name(HtmlEditorToolbarItem.Separator);
+			items.Add().Name(HtmlEditorToolbarItem.InsertTable);
+		})
+	)
+	.MediaResizing(m => m.Enabled(true))
+	.ImageUpload(upload => upload
+			.Tabs(tabs =>
+			{
+				tabs.Add().Name(HtmlEditorImageUploadTab.File);
+				tabs.Add().Name(HtmlEditorImageUploadTab.Url);
+			})
+		.UploadUrl(Url.Action("UploadImage", "Home")) // Controller endpoint
+		.UploadDirectory(new JS("uploadDiretoryPath"))
+		.FileUploadMode(HtmlEditorImageUploadFileUploadMode.Server) // or "form"
+		
+	)
+)
+@* 
+<div class="options">
+	<div class="caption">Options</div>
+	<div class="option">
+		@(Html.DevExtreme().CheckBox()
+				.Value(true)
+				.Text("Multiline toolbar")
+				.OnValueChanged("change_multiline")
+				)
+	</div>
+	<div class="option">
+		<div class="label">Image upload tabs:</div>
+		@(Html.DevExtreme().SelectBox()
+				.ID("html-editor-sb")
+				.InputAttr("aria-label", "Tab")
+				.DataSource(new JS("tabs"))
+				.Value(new JS("tabs[0].Value"))
+				.OnValueChanged("change_tabs")
+				.ValueExpr("Value")
+				.DisplayExpr("Name")
+				)
+	</div>
+</div> *@
+
+<script>
+	// function change_multiline(e) {
+	// 	$("#html-editor")
+	// 		.dxHtmlEditor("instance")
+	// 		.option("toolbar.multiline", e.value.Value);
+	// }
+
+	// function change_tabs(e) {
+	// 	$("#html-editor")
+	// 		.dxHtmlEditor("instance")
+	// 		.option("imageUpload.tabs", e.value);
+	// }
+
+	// var tabs = [
+	// 	{ Name: 'From This Device', Value: ['file'] },
+	// 	{ Name: 'From the Web', Value: ['url'] },
+	// 	{ Name: 'Both', Value: ['file', 'url'] },
+	// ];
+	
+	var uploadDiretoryPath = `.././uploads`;
+	var markup = `
+		<h2>
+
+			Formatted Text Editor (HTML Editor)
+		</h2>
+		<br>
+		<p>
+			DevExtreme JavaScript HTML Editor is a client-side WYSIWYG text editor that allows its users to format
+			textual and visual content and store it as HTML.
+		</p>
+		<p>Supported features:</p>
+		<ul>
+			<li>
+				Inline formats:
+				<ul>
+					<li><strong>Bold</strong>, <em>italic</em>, <s>strikethrough</s> text formatting</li>
+					<li>Font, size, color changes (HTML only)</li>
+				</ul>
+			</li>
+			<li>
+				Block formats:
+				<ul>
+					<li>Headers</li>
+					<li>Text alignment</li>
+					<li>Lists (ordered and unordered)</li>
+					<li>Code blocks</li>
+					<li>Quotes</li>
+				</ul>
+			</li>
+			<li>Custom formats</li>
+			<li>Mail-merge placeholders (for example, %username%)</li>
+			<li>Adaptive toolbar for working images, links, and color formats</li>
+			<li>Image upload: drag-and-drop images onto the form, select files from the file system, or specify a URL.</li>
+			<li>Copy-paste rich content (unsupported formats are removed)</li>
+			<li>Tables support</li>
+		</ul>
+		<br>
+		<p>Supported frameworks and libraries</p>
+		<table>
+			<tr>
+				<td><strong>jQuery</strong></td>
+				<td style="text-align: right;">v2.1 - v2.2 and v3.x</td>
+			</tr>
+			<tr>
+				<td><strong>Angular</strong></td>
+				<td style="text-align: right;">v7.0+</td>
+			</tr>
+			<tr>
+				<td><strong>React</strong></td>
+				<td style="text-align: right;">v16.2+</td>
+			</tr>
+			<tr>
+				<td><strong>Vue</strong></td>
+				<td style="text-align: right;">v2.6.3+</td>
+			</tr>
+		</table>
+	`;
+</script>
